@@ -1,0 +1,142 @@
+#deck-container {
+    margin-top: 20px;
+}
+
+#deck-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.deck-card {
+    position: relative;
+    margin-bottom: 60px; 
+    width: 130px;
+    height: 220px;
+}
+
+.card-container {
+    position: relative;
+    width: 100px;
+    height: 140px;
+}
+
+.card-image {
+    position: absolute;
+    width: 100px;
+    height: 140px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-name {
+    font-size: 14px;
+    margin-top: 80%;
+    text-align: center;
+}
+
+.deck-card .card-name {
+    position: relative;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px; 
+}
+
+.deck-card .card-container {
+    position: relative;
+    height: 140px;
+    width: 100px;
+}
+
+.deck-card .card-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.deck-card .card-controls {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; 
+}
+
+.control-button {
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 100px;
+    font-size: 20px;
+}
+
+#clear-deck-button{
+    background-color: red;
+    border: none;
+    position: absolute;
+    right: 0;
+}
+
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    z-index: 1000;
+}
+
+.notification {
+    position: relative;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.notification.show {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.notification .close-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#generate-deck-pdf-button{
+    background-color: #000;
+    position: absolute;
+    right: 0;
+}
+
+.loading-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 5px;
+    z-index: 1000;
+    font-size: 16px;
+    text-align: center;
+}
+
+#pdf-options{
+    position: absolute;
+    right: 0;
+}

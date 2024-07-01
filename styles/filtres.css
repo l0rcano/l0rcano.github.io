@@ -1,0 +1,197 @@
+/* Estils generals */
+#filtres-global {
+    width: 100%;
+    display: inline-block;
+    padding: 2%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.actiu{
+    background-color:#fff;
+    color:#000;
+}
+
+.showing-general {
+    /* background-color: #e4ebe4; */
+    background-color: #f1f6f1;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+/* Filtres */
+#filtres {
+    display: inline-block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#filtres.showing {
+    animation: showAnimation 0.5s ease forwards;
+    opacity: 1;
+    pointer-events: auto;
+    width: 100%;
+}
+
+#filtres.hiding {
+    animation: hideAnimation 0.5s ease forwards;
+}
+
+#sort-select {
+    width: 40%;
+    margin-left: 2%;
+}
+
+#invert-order-button,
+#clear-all {
+    width: 20%;
+}
+
+#sort-per {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    /* Para separar los botones */
+}
+
+/* Animacions */
+@keyframes showAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes hideAnimation {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Botons de filtres */
+.show-filters {
+    float: right;
+}
+
+.type-filter,
+.color-filter,
+.set-name {
+    width: 110px;
+    background-color: #000;
+    color: white;
+    border: solid 1px black;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/* Contenidor de filtres per color */
+#color-filters {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    margin: 0;
+}
+
+/* Contenidor de filtres per tipus */
+#card-type {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    margin: 0;
+}
+
+/* Contenidor de filtres per set */
+#set-name-filter {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    margin: 0;
+}
+
+/* Botó de netejar filtres */
+.clearBtn {
+    width: 96%;
+    margin-bottom: 7%;
+}
+
+.clear-search {
+    width: 98%;
+    margin-left: 1%;
+}
+
+/* Altres classes */
+
+.ink-content {
+    display: inline-flex;
+}
+
+.rang{
+    display: none;
+}
+
+#inkable {
+    display: inline-block;
+}
+
+#searchers {
+    display: none;
+    width: 100%;
+    padding: 2%;
+    box-sizing: border-box;
+}
+
+#searchers input {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* Pantalla mitjana */
+@media screen and (max-width: 1200px) {
+    #searchers input {
+        width: calc(100% - 20px);
+    }
+}
+
+/* Pantalla petita */
+@media screen and (max-width: 800px) {
+
+    .clear-search {
+        width: 98%;
+        margin-left: 1%;
+    }
+
+    .clearBtn {
+        width: 100%;
+    }
+
+    #search-input,
+    #search-input-att,
+    #search-input-global {
+        width: 100%;
+        margin-left: 2%;
+        margin-bottom: 5px;
+    }
+
+    #filtres-global {
+        min-width: 400px;
+        box-sizing: border-box;
+    }
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="cat">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descobreix el món de Lorcana en català a lorcanadex">
+    <title>Lorcano</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/rang.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/filtres.css">
+    <link rel="icon" type="image/png" href="resources/favicon.png">
+</head>
+
+<body>
+    <div class="show-filters">
+        <!-- <a href="proxys.html">proxys</a> -->
+        <a href="deck.html">decks</a>
+        <button class="filtresBtn">
+            Amaga els filtres
+        </button>
+    </div>
+
+    <div id="filtres-global">
+
+        <!-- Filtre per endreçar -->
+        <div id="sort-per">
+
+            <label for="sort-select">Endreça per:</label>
+            <br>
+            <select id="sort-select">
+                <option value="ink-cost">Cost de tinta</option>
+                <option value="name">Nom</option>
+                <option value="color">Color</option>
+                <option value="card-number">Número de carta</option>
+            </select>
+
+            <!-- Invertir ordre -->
+            <button id="invert-order-button">Invertir ordre</button>
+
+            <!-- Eliminar filtres -->
+            <button id="clear-all">Eliminar filtres</button>
+
+        </div>
+        <div id="filtres">
+            <br>
+
+            <!-- Filtres per colors -->
+            <button class="filtres-colors-Btn mostrar-opcions">
+                Mostra els filtres per colors
+            </button><br>
+            <div id="color-filters">
+                <!-- <label for="color-filter-label">Filtra per color</label><br> -->
+                <button class="color-filter" btn-color="purple" data-color="Amethyst">Lila</button>
+                <button class="color-filter" btn-color="green" data-color="Emerald">Verd</button>
+                <button class="color-filter" btn-color="red" data-color="Ruby">Vermell</button> <br>
+                <button class="color-filter" btn-color="grey" data-color="Steel">Gris</button>
+                <button class="color-filter" btn-color="orange" data-color="Amber">Taronja</button>
+                <button class="color-filter" btn-color="blue" data-color="Sapphire">Blau</button><br>
+                <button class="clear-filters-button clearBtn">Esborra els filtres</button>
+                <br>
+            </div>
+            <br>
+
+            <!-- filtres per tipus de carta -->
+            <button class="filtres-tipus-Btn mostrar-opcions">
+                Mostra els filtres per tipus
+            </button><br>
+            <div id="card-type">
+                <br>
+                <!-- <label for="type-filter-label">Filtra per tipus</label><br> -->
+                <button class="type-filter" type="Item">Item</button>
+                <button class="type-filter" type="Action">Acció</button>
+                <button class="type-filter" type="Action - Song">Cançó</button><br>
+                <button class="type-filter" type="Location">Localitat</button>
+                <button class="type-filter" type="Character">Personatge</button><br>
+                <button class="clear-types-button clearBtn">Esborra els filtres</button>
+                <br>
+                <br>
+            </div><br>
+
+            <!-- filtres per nom de colecció -->
+            <button class="filtres-set-Btn mostrar-opcions">
+                Mostra els filtres per set
+            </button><br>
+            <div id="set-name-filter">
+                <button class="set-name" set_name="The First Chapter">The First Charapter</button>
+                <button class="set-name" set_name="Rise of the Floodborn">Rise of the Floodborn</button><br>
+                <button class="set-name" set_name="Into the Inklands">Into the Inklands</button>
+                <button class="set-name" set_name="Ursula's Return">Ursula's return</button>
+                <button class="clear-set-button clearBtn">Esborra els filtres</button>
+                <br>
+                <br>
+            </div><br>
+
+            <!-- Rang per cost -->
+            <button class="show-range-Btn mostrar-opcions">
+                Mostra el rang de costos
+            </button> <br>
+
+            <div class="rang">
+                <br>
+                <div class="ink-content">
+                    <div class="cost-left">
+                        <label for="range-min">Min</label>
+                        <p id="min-value">1</p>
+                    </div>
+
+                    <div>
+                        <label for="range-max">Max</label>
+                        <p id="max-value">10</p>
+                    </div>
+                </div>
+
+                <div class="range-slider">
+                    <div class="range-fill"></div>
+                    <input type="range" id="range-min" class="min-ink" value="1" min="1" max="10" step="1" />
+                    <input type="range" id="range-max" class="max-ink" value="10" min="1" max="10" step="1" />
+                </div>
+            </div><br>
+
+            <!-- Camp de búsqueda per Name-->
+            <button class="show-search-btn">
+                Mostra els cercadors
+            </button>
+            <div id="searchers">
+
+                <input type="text" id="search-input" placeholder="Buscar per nom...">
+                <input type="text" id="search-input-att" placeholder="Buscar per atributs...">
+                <input type="text" id="search-input-eff" placeholder="Buscar per efectes...">
+                <input type="text" id="search-input-global" placeholder="Buscar per qualsevol cosa">
+
+                <!-- esborrar búsquedas -->
+                <!-- <br> -->
+                <!-- <button class="clear-search">Esborra búsquedes</button> -->
+            </div>
+            <!-- <br> -->
+            <br />
+            <!-- Dropdown per a filtres inkable -->
+            <div id="inkable">
+                <label for="inkable-select">Tintejable?</label>
+                <select id="inkable-select">
+                    <option value="any">-</option>
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <!-- placeholder -->
+    <div id="placeholder">
+        <br>
+        S'estan carregant les cartes, un moment siusplau...
+        <img id="loading-placeholder" src="resources/load.gif" alt="loading">
+    </div>
+
+    <!-- cartes -->
+    <div class="display-cards">
+        <ul id="file-list"></ul>
+    </div>
+
+    <!-- carrga més -->
+    <button id="load-more-button">Carrega més cartes</button>
+    <button id="load-all-button">Carrega totes les cartes</button>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+    </div>
+
+    <!-- scripts -->
+    <script type="module" src="scripts/modal.js"></script>
+    <script type="module" src="scripts/mostrar-filtres.js"></script>
+    <script type="module" src="scripts/api.js"></script>
+    <script type="module" src="scripts/filters.js"></script>
+    <script type="module" src="scripts/sorting.js"></script>
+    <script type="module" src="scripts/search.js"></script>
+    <script type="module" src="scripts/display.js"></script>
+    <script type="module" src="scripts/eventHandlers.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+
+
+    <!-- footer -->
+    <div id="footer">
+        © created by Tomàs Bernaus Solé and David López Casafont - 2024
+    </div>
+</body>
+
+</html>
