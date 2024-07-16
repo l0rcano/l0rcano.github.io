@@ -1,8 +1,8 @@
 export async function generateDeckPdf(deck, notificationContainer) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('portrait', 'mm', 'a4');
-    const cardWidth = 63;
-    const cardHeight = 87;
+    const cardWidth = 64;
+    const cardHeight = 89;
     const pageWidth = 210;
     const pageHeight = 297;
     const imagesPerRow = 3;
