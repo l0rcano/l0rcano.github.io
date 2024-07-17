@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchersContainer = document.getElementById("searchers");
 
   // Afegir classes inicials per a mostrar els filtres
-  if (document.title !== "DeckDex") {
+  if (document.title !== "Lorcano - Decks") {
   filtersContainer.classList.add("showing");
   }
   filtersGlobal.classList.add("showing-general");
