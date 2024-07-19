@@ -2,6 +2,7 @@ const searchInput = document.getElementById("search-input");
 const searchInputAtt = document.getElementById("search-input-att");
 const searchInputEff = document.getElementById("search-input-eff");
 const searchInputGlobal = document.getElementById("search-input-global");
+const searchInputIlustrator = document.getElementById("search-input-illustrator");
 
 
 export function applySearchFilters(cards) {
@@ -9,6 +10,7 @@ export function applySearchFilters(cards) {
   cards = searchByAttributes(cards);
   cards = searchByEffect(cards);
   cards = searchByGlobal(cards);
+  cards = searchByIlustrator(cards);
   return cards;
 }
 
@@ -54,6 +56,17 @@ function searchByGlobal(cards) {
         .join(" ")
         .toLowerCase();
       return cardValues.includes(searchTermGlobal);
+    });
+  }
+  return cards;
+}
+
+function searchByIlustrator(cards) {
+  const illustratorInput = searchInputIlustrator.value.toLowerCase();
+  if (illustratorInput) {
+    return cards.filter((card) => {
+      const artist = card.Artist ? card.Artist.toLowerCase() : "";
+      return  artist.includes(illustratorInput);
     });
   }
   return cards;

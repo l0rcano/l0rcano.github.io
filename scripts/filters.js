@@ -7,6 +7,7 @@ const colorFilters = document.querySelectorAll(".color-filter");
 const typeFilters = document.querySelectorAll(".type-filter");
 const setNameFilters = document.querySelectorAll(".set-name");
 const inkableSelect = document.getElementById("inkable-select");
+const illustratorInput = document.getElementById("search-input-illustrator");
 
 export function filterAndDisplayCards() {
   let filteredCards = cardsData;
