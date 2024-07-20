@@ -3,7 +3,7 @@ const searchInputAtt = document.getElementById("search-input-att");
 const searchInputEff = document.getElementById("search-input-eff");
 const searchInputGlobal = document.getElementById("search-input-global");
 const searchInputIlustrator = document.getElementById("search-input-illustrator");
-const searchNumberInput = document.getElementById("search-input-number");
+// const searchNumberInput = document.getElementById("search-input-number");
 
 export function applySearchFilters(cards) {
   cards = searchByName(cards);
@@ -11,7 +11,7 @@ export function applySearchFilters(cards) {
   cards = searchByEffect(cards);
   cards = searchByGlobal(cards);
   cards = searchByIlustrator(cards);
-  cards = searchByNumber(cards);
+  // cards = searchByNumber(cards);
   return cards;
 }
 
@@ -73,13 +73,13 @@ function searchByIlustrator(cards) {
   return cards;
 }
 
-function searchByNumber(cards) {
-  const numberInput = searchNumberInput.value.toString();
-  if (numberInput) {
-    return cards.filter((card) => {
-      const number = card.Card_Num ? card.Card_Num.toString() : "";
-      return number === numberInput;
-    });
-  }
-  return cards;
-}
+// function searchByNumber(cards) {
+//   const numberInput = searchNumberInput.value.toString();
+//   if (numberInput) {
+//     return cards.filter((card) => {
+//       const number = card.Card_Num ? card.Card_Num.toString() : "";
+//       return number === numberInput;
+//     });
+//   }
+//   return cards;
+// }
