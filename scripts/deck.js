@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }).catch(err => {
             console.error("Error al copiar el deck al portapapeles: ", err);
         });
-    }
+    }    
 
     function importDeck() {
         const deckText = importDeckInput.value.trim();
@@ -113,18 +113,18 @@ document.addEventListener("DOMContentLoaded", function () {
             lines.forEach(line => {
                 const parts = line.split(' ');
                 const copies = parseInt(parts.shift(), 10);
-                const name = parts.join(' ');
-                const existingCard = deck.find(card => card.Name === name);
+                const name = parts.join(' ').toLowerCase();
+                const existingCard = deck.find(card => card.Name.toLowerCase() === name);
                 if (existingCard) {
                     existingCard.copies += copies;
                     if (existingCard.copies > 4) {
                         existingCard.copies = 4;
                     }
                 } else {
-                    const cardData = cardsData.find(card => card.Name == name);
+                    const cardData = cardsData.find(card => card.Name.toLowerCase() === name);
                     if (cardData) {
                         deck.push({
-                            Name: name,
+                            Name: cardData.Name, 
                             Image: cardData.Image,
                             copies: Math.min(copies, 4)
                         });
@@ -137,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
             renderDeck();
         }
     }
+    
 
     function showNotification(message) {
         const notification = document.createElement('div');
