@@ -1,11 +1,20 @@
 /* Estils generals */
 
-
-body {
-  font-family: 'Waltograph', 'Anta', 'Lato', 'arial', cursive;
+body, html {
   /* background-color: #f1f6f1; */
+  font-family: 'Waltograph', 'Anta', 'Lato', 'arial', cursive;
   background-color: #e4ebe4;
   color: #333;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media screen and (min-width: 1200px) {
@@ -97,13 +106,3 @@ button.actiu, select.actiu {
   max-width: 100%;
 }
 
-/* footer */
-#footer {
-  position: float; 
-  bottom: 0; 
-  width: 100%;
-  text-align: center; 
-  padding: 10px 0; 
-  margin-top: 20px;
-  font-size: smaller;
-}
