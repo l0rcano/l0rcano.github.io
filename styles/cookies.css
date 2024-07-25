@@ -11,7 +11,7 @@
 }
 #cookie-consent-banner p {
     display: inline;
-    font-family: 'Waltograph', 'Anta', 'Lato', 'arial', cursive;
+    font-family: 'Waltograph', 'Anta', 'Lato', 'arial', 'cursive';
 }
 #cookie-consent-banner button {
     display: inline-block;
@@ -25,3 +25,10 @@
 #cookie-consent-banner button:hover {
     background-color: #555;
 }
+.privacidad{
+    text-decoration: none;
+    color:#fff;
+  }
+  .privacidad:visited{
+    color:#fff;
+  }

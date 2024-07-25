@@ -189,18 +189,19 @@ crossorigin="anonymous"></script>
     </div>
 
     <!-- privacidad -->
-    <div id="privacidad">
-       <p>Política de privacitat de <a class="privacidad" href="https://policies.google.com/technologies/partner-sites">Google</a></p>
-       <p>Consentiment d'usuaris de L'<a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">UE</a></p>
-       <p><a class="privacidad" href="privacitat">Política de Privacitat</a></p>
-    </div>
-
+    
+    <script type="module" src="scripts/cookies.js"></script>
+    <link rel="stylesheet" href="styles/cookies.css">   
     <div id="cookie-consent-banner" style="display:none;">
         <p>Fem servir cookies per a monitoritzar el lloc web</p>
         <button id="accept-cookies">Acceptar</button>
         <button id="decline-cookies">No acceptar</button>
+        <div id="privacidad">
+           <p><a class="privacidad" href="https://policies.google.com/technologies/partner-sites">Política de privacitat de Google</a></p> <br/>
+           <p><a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">Consentiment d'usuaris de L'UE</a></p> <br/>
+           <p><a class="privacidad" href="privacitat">Política de Privacitat</a></p>
+        </div>
     </div>
-    
 </body>
 
 </html>
