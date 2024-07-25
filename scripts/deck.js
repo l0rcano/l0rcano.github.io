@@ -137,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
             renderDeck();
         }
     }
-    
 
     function showNotification(message) {
         const notification = document.createElement('div');
