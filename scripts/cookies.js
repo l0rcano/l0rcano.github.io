@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function loadAds() {
     if (localStorage.getItem('cookieConsent') === 'accepted') {
         const script = document.createElement('script');
-        script.src = 'URL_DEL_SCRIPT_DE_PUBLICIDAD'; 
+        script.src = 'URL_DEL_SCRIPT_DE_PUBLICIDAD'; //s'ha de substituir per l'enllaç a adsense
         document.head.appendChild(script);
     }
 }
