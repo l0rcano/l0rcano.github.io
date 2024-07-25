@@ -29,7 +29,7 @@ crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <a href="index">torna</a>
+    <a href="/">torna</a>
     <div class="show-filters">
         <button class="filtresBtn">
             Mostra els filtres
@@ -183,12 +183,24 @@ crossorigin="anonymous"></script>
     <script type="module" src="scripts/main.js"></script>
     <script type="module" src="scripts/deck.js"></script>
 
-
+    <!-- footer -->
     <div id="footer">
-        © Lorcano - creat per Tomàs Bernaus Solé i David López Casafont - 2024.
+        © Lorcano - creat per Tomàs Bernaus Solé i David López Casafont - 2024
     </div>
-    <div id="notification-container" class="notification-container"></div>
 
+    <!-- privacidad -->
+    <div id="privacidad">
+       <p>Política de privacitat de <a class="privacidad" href="https://policies.google.com/technologies/partner-sites">Google</a></p>
+       <p>Consentiment d'usuaris de L'<a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">UE</a></p>
+       <p><a class="privacidad" href="privacitat">Política de Privacitat</a></p>
+    </div>
+
+    <div id="cookie-consent-banner" style="display:none;">
+        <p>Fem servir cookies per a monitoritzar el lloc web</p>
+        <button id="accept-cookies">Acceptar</button>
+        <button id="decline-cookies">No acceptar</button>
+    </div>
+    
 </body>
 
 </html>

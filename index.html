@@ -25,6 +25,7 @@ crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/rang.css">
     <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/filtres.css">
+    <link rel="stylesheet" href="styles/cookies.css">
     <link rel="icon" type="image/png" href="resources/favicon.png">
 </head>
 
@@ -199,6 +200,7 @@ crossorigin="anonymous"></script>
     <script type="module" src="scripts/display.js"></script>
     <script type="module" src="scripts/eventHandlers.js"></script>
     <script type="module" src="scripts/main.js"></script>
+    <script type="module" src="scripts/cookies.js"></script>
 
     <!-- footer -->
     <div id="footer">
@@ -209,7 +211,15 @@ crossorigin="anonymous"></script>
     <div id="privacidad">
        <p>Política de privacitat de <a class="privacidad" href="https://policies.google.com/technologies/partner-sites">Google</a></p>
        <p>Consentiment d'usuaris de L'<a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">UE</a></p>
+       <p><a class="privacidad" href="privacitat">Política de Privacitat</a></p>
     </div>
+
+    <div id="cookie-consent-banner" style="display:none;">
+        <p>Fem servir cookies per a monitoritzar el lloc web</p>
+        <button id="accept-cookies">Acceptar</button>
+        <button id="decline-cookies">No acceptar</button>
+    </div>
+    
 </body>
 
 </html>
