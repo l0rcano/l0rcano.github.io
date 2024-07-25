@@ -107,3 +107,9 @@ button.actiu, select.actiu {
   margin-top: 20px;
   font-size: smaller;
 }
+.privacidad{
+  text-decoration: none;
+}
+.privacidad:visited{
+  color:#333;
+}
