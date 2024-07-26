@@ -78,11 +78,25 @@
     font-size: 20px;
 }
 
-#clear-deck-button{
+#clear-deck-button {
     background-color: red;
     border: none;
-    position: absolute;
-    right: 0;
+}
+
+#deck-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+#deck-controls-left, #deck-controls-right {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1%;
+    margin-left: 0.5%;
+}
+
+#deck-controls-right > * {
+    margin-bottom: 5px;
 }
 
 .notification-container {
@@ -116,12 +130,6 @@
     font-weight: bold;
 }
 
-#generate-deck-pdf-button{
-    background-color: #000;
-    position: absolute;
-    right: 0;
-}
-
 .loading-message {
     position: fixed;
     top: 50%;
@@ -136,7 +144,11 @@
     text-align: center;
 }
 
-#pdf-options{
-    position: absolute;
-    right: 0;
+#pdf-options {
+    display: flex;
+    align-items: center;
+}
+
+#deck-title{
+    margin-left: 1%;
 }
