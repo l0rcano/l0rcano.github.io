@@ -5,7 +5,7 @@ from io import BytesIO
 import re
 
 # Directorio donde se guardarán las imágenes
-output_dir = "shimmering_skies_images"
+output_dir = "new_set_images"
 os.makedirs(output_dir, exist_ok=True)
 
 # Función para limpiar el nombre de archivo
@@ -20,10 +20,10 @@ response = requests.get(url)
 cards = response.json()
 
 # Filtrar cartas del set "Shimmering Skies"
-setNameToDownload = [card for card in cards if card["Set_Name"] == "Shimmering Skies"]
+newSetName = [card for card in cards if card["Set_Name"] == "Shimmering Skies"]
 
 # Descargar y comprimir imágenes
-for card in setNameToDownload:
+for card in newSetName:
     image_url = card["Image"]
     card_name = clean_filename(card["Name"].replace(" ", "_"))  # Limpia y reemplaza espacios por guiones bajos
     image_path = os.path.join(output_dir, f"{card_name}.jpg")
@@ -37,9 +37,13 @@ for card in setNameToDownload:
     image_response = requests.get(image_url)
     image = Image.open(BytesIO(image_response.content))
     
-    # Comprimir y guardar la imagen
-    image.save(image_path, format='JPG', optimize=True, quality=10)  # Comprime al máximo con calidad baja
+    # Convertir la imagen a modo RGB si no lo está (para asegurar compatibilidad con JPG)
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+    
+    # Comprimir y guardar la imagen directamente en formato JPG
+    image.save(image_path, format='JPEG', optimize=True, quality=10)  # Comprime con calidad baja
 
-    print(f"Imagen de {card_name} descargada y comprimida.")
+    print(f"Imagen de {card_name} descargada y comprimida en formato JPG.")
 
 print("Descarga y compresión completadas.")
