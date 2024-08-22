@@ -12,7 +12,6 @@ export function fetchCardsData() {
       cardsData = data.map(card => {
         const cardName = cleanFilename(card.Name);
         card.Image = `resources/img/${cardName}.jpg`;
-        card.Image += `resources/img/${cardName}.png`;
         return card;
       });
       return cardsData;
