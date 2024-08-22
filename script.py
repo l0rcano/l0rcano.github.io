@@ -26,7 +26,7 @@ setNameToDownload = [card for card in cards if card["Set_Name"] == "Shimmering S
 for card in setNameToDownload:
     image_url = card["Image"]
     card_name = clean_filename(card["Name"].replace(" ", "_"))  # Limpia y reemplaza espacios por guiones bajos
-    image_path = os.path.join(output_dir, f"{card_name}.png")
+    image_path = os.path.join(output_dir, f"{card_name}.jpg")
     
     # Comprobar si la imagen ya existe
     if os.path.exists(image_path):
@@ -38,7 +38,7 @@ for card in setNameToDownload:
     image = Image.open(BytesIO(image_response.content))
     
     # Comprimir y guardar la imagen
-    image.save(image_path, format='PNG', optimize=True, quality=10)  # Comprime al máximo con calidad baja
+    image.save(image_path, format='JPG', optimize=True, quality=10)  # Comprime al máximo con calidad baja
 
     print(f"Imagen de {card_name} descargada y comprimida.")
 
