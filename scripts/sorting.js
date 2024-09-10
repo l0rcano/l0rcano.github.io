@@ -16,12 +16,18 @@ export function sortAndDisplayCards(cards) {
   cards.sort((a, b) => {
     if (sortBy === "name") {
       return a.Name.localeCompare(b.Name) || a.Cost - b.Cost;
+    } else if(sortBy === "ink-cost"){
+      return a.Cost - b.Cost || a.Name.localeCompare(b.Name);
     } else if (sortBy === "color") {
       return a.Color.localeCompare(b.Color) || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+    } else if(sortBy === "strength"){
+      return a.Strength - b.Strength || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+    } else if(sortBy === "willpower"){
+      return a.Willpower - b.Willpower || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+    } else if(sortBy === "lore"){
+      return a.Lore - b.Lore || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
     } else if (sortBy === "card-number") {
       return a.Set_Num - b.Set_Num || a.Card_Num - b.Card_Num;
-    } else {
-      return a.Cost - b.Cost || a.Name.localeCompare(b.Name);
     }
   });
 
