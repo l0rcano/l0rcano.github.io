@@ -21,11 +21,11 @@ export function sortAndDisplayCards(cards) {
     } else if (sortBy === "color") {
       return a.Color.localeCompare(b.Color) || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
     } else if(sortBy === "strength"){
-      return a.Strength - b.Strength || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+      return a.Strength - b.Strength || a.Cost - b.Cost || a.Willpower - b.Willpower || a.Name.localeCompare(b.Name);
     } else if(sortBy === "willpower"){
-      return a.Willpower - b.Willpower || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+      return a.Willpower - b.Willpower || a.Cost - b.Cost || a.Strength - b.Strength || a.Name.localeCompare(b.Name);
     } else if(sortBy === "lore"){
-      return a.Lore - b.Lore || a.Cost - b.Cost || a.Name.localeCompare(b.Name);
+      return a.Lore - b.Lore || a.Cost - b.Cost || a.Strength - b.Strength || a.Willpower - b.Willpower || a.Name.localeCompare(b.Name);
     } else if (sortBy === "card-number") {
       return a.Set_Num - b.Set_Num || a.Card_Num - b.Card_Num;
     }
