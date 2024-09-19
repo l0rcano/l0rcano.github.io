@@ -19,9 +19,7 @@ export function displayCards(cards) {
   filteredCards.forEach((cardData) => {
     const listItem = document.createElement("li");
     const imageElement = document.createElement("img");
-    const cardName = cleanFilename(cardData.Name.toLowerCase());
-    imageElement.setAttribute("data-src", `resources/img/en/${cardName}.jpg`);
-    // imageElement.setAttribute("data-src", cardData.Image);
+    imageElement.setAttribute("data-src", cardData.Image);
     imageElement.alt = cardData.Name;
     listItem.textContent = `${cardData.Name}`;
     listItem.appendChild(imageElement);
@@ -29,13 +27,6 @@ export function displayCards(cards) {
   });
 
   lazyLoadImages();
-}
-
-function cleanFilename(filename) {
-  return filename
-    .toLowerCase()
-    .replace(/[\\/*?:"<>|]/g, '_') 
-    .replace(/\s+/g, '_');
 }
 
 function lazyLoadImages() {
