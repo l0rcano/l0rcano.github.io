@@ -14,6 +14,7 @@ export function setupEventHandlers() {
   const searchInputEff = document.getElementById("search-input-eff");
   const searchInputGlobal = document.getElementById("search-input-global");
   const inkableSelect = document.getElementById("inkable-select");
+  const enchantedSelect = document.getElementById("enchanted-select");
   const invertOrderButton = document.getElementById("invert-order-button");
   const loadMoreButton = document.getElementById("load-more-button");
   const loadAllButton = document.getElementById("load-all-button");
@@ -74,6 +75,7 @@ export function setupEventHandlers() {
   searchInputGlobal.addEventListener("input", filterAndDisplayCards);
 
   inkableSelect.addEventListener("change", filterAndDisplayCards);
+  enchantedSelect.addEventListener("change", filterAndDisplayCards);
 
   invertOrderButton.addEventListener("click", function () {
     isOrderReversed = !isOrderReversed;

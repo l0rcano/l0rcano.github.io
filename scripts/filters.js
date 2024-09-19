@@ -7,12 +7,14 @@ const colorFilters = document.querySelectorAll(".color-filter");
 const typeFilters = document.querySelectorAll(".type-filter");
 const setNameFilters = document.querySelectorAll(".set-name");
 const inkableSelect = document.getElementById("inkable-select");
+const enchantedSelect = document.getElementById("enchanted-select");
 
 export function filterAndDisplayCards() {
   let filteredCards = cardsData;
 
   filteredCards = applyColorFilter(filteredCards);
   filteredCards = applyInkableFilter(filteredCards);
+  filteredCards = applyEnchantedFilter(filteredCards);
   filteredCards = applyCostFilter(filteredCards);
   filteredCards = applyTypeFilter(filteredCards);
   filteredCards = applySetFilter(filteredCards);
@@ -41,6 +43,15 @@ function applyInkableFilter(cards) {
   }
   return cards;
 }
+function applyEnchantedFilter(cards) {
+  const enchantedValue = enchantedSelect.value;
+  if (enchantedValue !== "any") {
+    const enchantedBoolean = enchantedValue === "true";
+    return cards.filter((card) => card.Enchanted === enchantedBoolean);
+  }
+  return cards;
+}
+
 
 function applyCostFilter(cards) {
   const minInk = parseInt(document.getElementById("min-value").innerHTML);
@@ -75,6 +86,7 @@ export function resetFilters() {
   typeFilters.forEach((filter) => filter.classList.remove("active"));
   setNameFilters.forEach((filter) => filter.classList.remove("active"));
   inkableSelect.value = "any";
+  enchantedSelect.value = "any";
   setDefaultRangeValues();
   filterAndDisplayCards();
 }
