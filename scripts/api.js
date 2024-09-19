@@ -3,7 +3,10 @@ const apiUrl = "../api.json";
 export let cardsData = [];
 
 function cleanFilename(filename) {
-  return filename.replace(/[\\/*?:"<>|]/g, '_').replace(/\s+/g, '_');
+  return filename
+    .toLowerCase() 
+    .replace(/[\\/*?:"<>|]/g, '_')
+    .replace(/\s+/g, '_');
 }
 
 export function fetchCardsData() {
