@@ -19,9 +19,7 @@ export function fetchCardsData() {
     .then((data) => {
       cardsData = data.map(card => {
         const cardName = cleanFilename(card.Name);
-        console.log(cardName)
-        card.Image = `resources/img/en/${cardName}.jpg`;
-        console.log(card.Image)
+        card.Image = `resources/img/en/${cardName.toLowerCase()}.jpg`;
         return card;
       });
       return cardsData;
