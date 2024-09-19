@@ -1,4 +1,5 @@
-const apiUrl = "https://api.lorcana-api.com/cards/all";
+// https://lorcanajson.org/
+const apiUrl = "../api.json";
 export let cardsData = [];
 
 function cleanFilename(filename) {
@@ -11,7 +12,7 @@ export function fetchCardsData() {
     .then((data) => {
       cardsData = data.map(card => {
         const cardName = cleanFilename(card.Name);
-        card.Image = `resources/img/${cardName}.jpg`;
+        card.Image = `resources/img/en/${cardName}.jpg`;
         return card;
       });
       return cardsData;
