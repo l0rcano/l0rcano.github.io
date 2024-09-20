@@ -26,23 +26,7 @@ export function setupEventHandlers() {
   const clearRarityButton = document.querySelector(".clear-rarity-button");
   const clearSearchButton = document.querySelector(".clear-search");
   const inputElements = document.querySelectorAll("input");
-  const backToTopButton = document.getElementById("back-to-top");
 
-  sortSelect.addEventListener("change", filterAndDisplayCards);
-
-  colorFilters.forEach((filter) => {
-    filter.addEventListener("click", function () {
-      this.classList.toggle("active");
-      if (this.classList.contains("active")) {
-        this.style.backgroundColor = this.getAttribute("btn-color");
-        this.style.color = "#fff";
-      } else {
-        this.style.backgroundColor = "#000";
-        this.style.color = "#fff";
-      }
-      filterAndDisplayCards();
-    });
-  });
 
   typeFilters.forEach((filter) => {
     filter.addEventListener("click", function () {

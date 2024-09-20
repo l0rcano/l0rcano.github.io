@@ -219,22 +219,3 @@
     }
 }
 
-/* botó per pujar */
-#back-to-top a{
-    text-decoration: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    /* display: block;  */
-    z-index: 1000;
-}
-
-#back-to-top:hover {
-    background-color: #444;
-}
