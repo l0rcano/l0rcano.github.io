@@ -9,6 +9,7 @@ export function setupEventHandlers() {
   const colorFilters = document.querySelectorAll(".color-filter");
   const typeFilters = document.querySelectorAll(".type-filter");
   const setNameFilters = document.querySelectorAll(".set-name");
+  const rarityNameFilters = document.querySelectorAll(".rarity-name");
   const searchInput = document.getElementById("search-input");
   const searchInputAtt = document.getElementById("search-input-att");
   const searchInputEff = document.getElementById("search-input-eff");
@@ -22,6 +23,7 @@ export function setupEventHandlers() {
   const clearFiltersButton = document.querySelector(".clear-filters-button");
   const clearTypesButton = document.querySelector(".clear-types-button");
   const clearSetButton = document.querySelector(".clear-set-button");
+  const clearRarityButton = document.querySelector(".clear-rarity-button");
   const clearSearchButton = document.querySelector(".clear-search");
   const inputElements = document.querySelectorAll("input");
 
@@ -56,6 +58,20 @@ export function setupEventHandlers() {
   });
 
   setNameFilters.forEach((filter) => {
+    filter.addEventListener("click", function () {
+      this.classList.toggle("active");
+      if (this.classList.contains("active")) {
+        this.style.backgroundColor = '#fff';
+        this.style.color = "#000";
+      } else {
+        this.style.backgroundColor = "#000";
+        this.style.color = "#fff";
+      }
+      filterAndDisplayCards();
+    });
+  });
+  
+  rarityNameFilters.forEach((filter) => {
     filter.addEventListener("click", function () {
       this.classList.toggle("active");
       if (this.classList.contains("active")) {
@@ -114,6 +130,11 @@ export function setupEventHandlers() {
     filterAndDisplayCards();
   });
 
+  clearRarityButton.addEventListener("click", function () {
+    resetSpecificFilters("rarity-name");
+    filterAndDisplayCards();
+  });
+
   // clearSearchButton.addEventListener("click", function () {
   //   clearSearchFields();
   //   filterAndDisplayCards();
@@ -124,7 +145,7 @@ export function setupEventHandlers() {
   });
 
   function removeAllActiveClasses() {
-    const allFilters = document.querySelectorAll(".color-filter, .type-filter, .set-name");
+    const allFilters = document.querySelectorAll(".color-filter, .type-filter, .set-name, .rarity-name");
     allFilters.forEach((filter) => {
       filter.classList.remove("active");
       filter.style.backgroundColor = "#000";
@@ -140,6 +161,8 @@ export function setupEventHandlers() {
       filters = document.querySelectorAll(".type-filter");
     } else if (filterType === "set") {
       filters = document.querySelectorAll(".set-name");
+    } else if (filterType === "rarity-name") {
+      filters = document.querySelectorAll(".rarity-name");
     }
 
     filters.forEach((filter) => {

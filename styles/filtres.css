@@ -20,6 +20,11 @@
 }
 
 /* Filtres */
+
+#botonsFiltres{
+    text-align: center;
+}
+
 #filtres {
     display: inline-block;
     opacity: 0;
@@ -53,6 +58,11 @@
     align-items: center;
     /* justify-content: space-between; */
     /* Para separar los botones */
+}
+
+#filtres.showing, #color-filters, #card-type, #set-name-filter, #rarity-filter, #rang, #searchers{
+    align-items: center;
+    text-align: center;
 }
 
 /* Animacions */
@@ -123,6 +133,14 @@
     border-radius: 15px;
     margin: 0;
 }
+/* Contenidor de filtres per raresa */
+#rarity-filter {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    margin: 0;
+}
 
 /* Botó de netejar filtres */
 .clearBtn {
@@ -150,7 +168,7 @@
 }
 
 #searchers {
-    display: none;
+    display: block;
     width: 100%;
     padding: 2%;
     box-sizing: border-box;

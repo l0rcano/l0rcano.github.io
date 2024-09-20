@@ -6,6 +6,7 @@ import { cardsData } from "./api.js";
 const colorFilters = document.querySelectorAll(".color-filter");
 const typeFilters = document.querySelectorAll(".type-filter");
 const setNameFilters = document.querySelectorAll(".set-name");
+const rarityNameFilters = document.querySelectorAll(".rarity-name");
 const inkableSelect = document.getElementById("inkable-select");
 const enchantedSelect = document.getElementById("enchanted-select");
 
@@ -18,6 +19,7 @@ export function filterAndDisplayCards() {
   filteredCards = applyCostFilter(filteredCards);
   filteredCards = applyTypeFilter(filteredCards);
   filteredCards = applySetFilter(filteredCards);
+  filteredCards = applyRarityFilter(filteredCards);
 
   filteredCards = applySearchFilters(filteredCards);
   sortAndDisplayCards(filteredCards);
@@ -81,10 +83,22 @@ function applySetFilter(cards) {
   return cards;
 }
 
+function applyRarityFilter(cards) {
+  const activeRarity = Array.from(rarityNameFilters)
+    .filter((filter) => filter.classList.contains("active"))
+    .map((filter) => filter.getAttribute("Rarity"));
+    console.log(activeRarity)
+  if (activeRarity.length > 0) {
+    return cards.filter((card) => activeRarity.includes(card.Rarity));
+  }
+  return cards;
+}
+
 export function resetFilters() {
   colorFilters.forEach((filter) => filter.classList.remove("active"));
   typeFilters.forEach((filter) => filter.classList.remove("active"));
   setNameFilters.forEach((filter) => filter.classList.remove("active"));
+  rarityNameFilters.forEach((filter) => filter.classList.remove("active"));
   inkableSelect.value = "any";
   enchantedSelect.value = "any";
   setDefaultRangeValues();
