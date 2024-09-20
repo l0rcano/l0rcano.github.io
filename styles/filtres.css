@@ -196,6 +196,24 @@
 /* Pantalla petita */
 @media screen and (max-width: 800px) {
 
+    #sort-per {
+        flex-direction: column; 
+        align-items: flex-start; 
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2%;
+    }
+
+    #sort-per select {
+        width: 85%; 
+        margin-bottom: 10px; 
+    }
+    
+
+    #sort-per button {
+        width: 30%; 
+    }
+
     .clear-search {
         width: 98%;
         margin-left: 1%;
@@ -215,6 +233,22 @@
 
     #filtres-global {
         min-width: 400px;
+        box-sizing: border-box;
+    }
+    #botonsFiltres {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2%;
+    }
+    
+    #botonsFiltres button {
+        width: 30%;
+        margin-bottom: 10px;
+    }
+    #searchers {
+        display: block;
+        width: 85%;
+        padding: 2%;
         box-sizing: border-box;
     }
 }
