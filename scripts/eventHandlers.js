@@ -103,7 +103,19 @@ export function setupEventHandlers() {
     filterAndDisplayCards();
   });
 
+  loadMoreButton.addEventListener("touchstart", function (event) {
+    event.preventDefault();
+    setCardsDisplayed(getCardsDisplayed() + 10);
+    filterAndDisplayCards();
+  });
+
   loadAllButton.addEventListener("click", function () {
+    setCardsDisplayed(cardsData.length);
+    filterAndDisplayCards();
+  });
+
+  loadAllButton.addEventListener("touchstart", function (event) {
+    event.preventDefault();
     setCardsDisplayed(cardsData.length);
     filterAndDisplayCards();
   });
