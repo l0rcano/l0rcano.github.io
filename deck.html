@@ -39,7 +39,10 @@ crossorigin="anonymous"></script>
     </div>
 
     <div id="filtres-global">
+
+        <!-- Filtre per endreçar -->
         <div id="sort-per">
+
             <label for="sort-select">Endreça per:</label>
             <br>
             <select id="sort-select">
@@ -51,15 +54,42 @@ crossorigin="anonymous"></script>
                 <option value="lore">Lore</option>
                 <option value="card-number">Número de carta</option>
             </select>
+
+            <!-- Invertir ordre -->
             <button id="invert-order-button">Invertir ordre</button>
+
+            <!-- Eliminar filtres -->
             <button id="clear-all">Eliminar filtres</button>
+
         </div>
-        <div id="filtres" style="display: none;">
-            <br>
+        <br />
+        <div id="botonsFiltres">
             <button class="filtres-colors-Btn mostrar-opcions">
                 Mostra els filtres per colors
-            </button><br>
+            </button>
+            <button class="filtres-tipus-Btn mostrar-opcions">
+                Mostra els filtres per tipus
+            </button>
+            <button class="filtres-set-Btn mostrar-opcions">
+                Mostra els filtres per set
+            </button>
+            <button class="filtres-rarity-Btn mostrar-opcions">
+                Mostra els filtres per raresa
+            </button>
+            <button class="show-range-Btn mostrar-opcions">
+                Mostra el selector de cost
+            </button>
+            <button class="show-search-btn">
+                Amaga els cercadors
+            </button>
+        </div>
+
+        <div id="filtres" style="display: none;">
+
+            <!-- Filtres per colors -->
+           
             <div id="color-filters">
+                <!-- <label for="color-filter-label">Filtra per color</label><br> -->
                 <button class="color-filter" btn-color="purple" data-color="Amethyst">Lila</button>
                 <button class="color-filter" btn-color="green" data-color="Emerald">Verd</button>
                 <button class="color-filter" btn-color="red" data-color="Ruby">Vermell</button> <br>
@@ -67,25 +97,21 @@ crossorigin="anonymous"></script>
                 <button class="color-filter" btn-color="orange" data-color="Amber">Ambar</button>
                 <button class="color-filter" btn-color="blue" data-color="Sapphire">Blau</button><br>
                 <button class="clear-filters-button clearBtn">Esborra els filtres</button>
-                <br>
             </div>
-            <br>
-            <button class="filtres-tipus-Btn mostrar-opcions">
-                Mostra els filtres per tipus
-            </button><br>
+
+            <!-- filtres per tipus de carta -->
+
             <div id="card-type">
-                <br>
+                <!-- <label for="type-filter-label">Filtra per tipus</label><br> -->
                 <button class="type-filter" type="Item">Item</button>
                 <button class="type-filter" type="Action">Acció</button>
                 <button class="type-filter" type="Action - Song">Cançó</button><br>
                 <button class="type-filter" type="Location">Ubicació</button>
                 <button class="type-filter" type="Character">Personatge</button><br>
                 <button class="clear-types-button clearBtn">Esborra els filtres</button>
-                <br><br>
-            </div><br>
-            <button class="filtres-set-Btn mostrar-opcions">
-                Mostra els filtres per set
-            </button><br>
+            </div>
+
+            <!-- filtres per nom de colecció -->
             <div id="set-name-filter">
                 <button class="set-name" set_name="The First Chapter">The First Chapter</button>
                 <button class="set-name" set_name="Rise of the Floodborn">Rise of the Floodborn</button><br>
@@ -93,33 +119,57 @@ crossorigin="anonymous"></script>
                 <button class="set-name" set_name="Ursula's Return">Ursula's return</button>
                 <button class="set-name" set_name="Shimmering Skies">Shimmering Skies</button>
                 <button class="clear-set-button clearBtn">Esborra els filtres</button>
-                <br><br>
-            </div><br>
-            <button class="show-range-Btn mostrar-opcions">
-                Mostra el rang de costos
-            </button> <br>
-            <div class="rang">
+            </div>
+
+            <!-- filtres per raresa -->
+            <div id="rarity-filter">
+                <button class="rarity-name" rarity="Common">
+                    <img src="/resources/common.png" alt="Common">
+                </button>
+                <button class="rarity-name" rarity="Uncommon">
+                    <img src="/resources/uncommon.png" alt="Uncommon">
+                </button>
+                <button class="rarity-name" rarity="Rare">
+                    <img src="/resources/rare.png" alt="Rare">
+                </button>
                 <br>
+                <button class="rarity-name" rarity="Super Rare">
+                    <img src="/resources/superare.png" alt="Super rare">
+                </button>
+                <button class="rarity-name" rarity="Legendary">
+                    <img src="/resources/legendary.png" alt="Legendary">
+                </button>
+                <button class="rarity-name" rarity="Enchanted">
+                    <img src="/resources/enchanted.png" alt="Enchanted">
+                </button>
+                <button class="clear-rarity-button clearBtn">Esborra els filtres</button>
+            </div>
+
+            <!-- Rang per cost -->
+
+            <div class="rang">
                 <div class="ink-content">
                     <div class="cost-left">
                         <label for="range-min">Min</label>
                         <p id="min-value">1</p>
                     </div>
+
                     <div>
                         <label for="range-max">Max</label>
                         <p id="max-value">10</p>
                     </div>
                 </div>
+
                 <div class="range-slider">
                     <div class="range-fill"></div>
                     <input type="range" id="range-min" class="min-ink" value="1" min="1" max="10" step="1" />
                     <input type="range" id="range-max" class="max-ink" value="10" min="1" max="10" step="1" />
                 </div>
-            </div><br>
-            <button class="show-search-btn">
-                Mostra els cercadors
-            </button>
+            </div>
+
+            <!-- Camp de búsqueda per Name-->
             <div id="searchers">
+
                 <input type="text" id="search-input" placeholder="Buscar per nom...">
                 <input type="text" id="search-input-att" placeholder="Buscar per atributs...">
                 <input type="text" id="search-input-eff" placeholder="Buscar per efectes...">
@@ -132,26 +182,24 @@ crossorigin="anonymous"></script>
                 <!-- <br> -->
                 <!-- <button class="clear-search">Esborra búsquedes</button> -->
             </div>
-            <!-- <br> -->
-            <br />
-            <div id="inkable">
+                <br>
+            <div>
+            <!-- Dropdown per a filtres inkable -->
                 <label for="inkable-select">Tintejable?</label>
                 <select id="inkable-select">
                     <option value="any">-</option>
                     <option value="true">Sí</option>
                     <option value="false">No</option>
                 </select>
-            </div>
-            <br>
             
             <!-- Dropdown per a filtres Enchanted -->
-            <div id="enchanted">
                 <label for="enchanted-select">Enchanted?</label>
                 <select id="enchanted-select">
                     <option value="any">-</option>
                     <option value="true">Sí</option>
-                    <option value="false">No</option>
+                    <option value="false" selected>No</option>
                 </select>
+
             </div>
         </div>
     </div>
