@@ -87,7 +87,6 @@ function applyRarityFilter(cards) {
   const activeRarity = Array.from(rarityNameFilters)
     .filter((filter) => filter.classList.contains("active"))
     .map((filter) => filter.getAttribute("Rarity"));
-    console.log(activeRarity)
   if (activeRarity.length > 0) {
     return cards.filter((card) => activeRarity.includes(card.Rarity));
   }
