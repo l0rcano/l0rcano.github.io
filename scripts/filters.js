@@ -99,7 +99,7 @@ export function resetFilters() {
   setNameFilters.forEach((filter) => filter.classList.remove("active"));
   rarityNameFilters.forEach((filter) => filter.classList.remove("active"));
   inkableSelect.value = "any";
-  enchantedSelect.value = "any";
+  enchantedSelect.value = false;
   setDefaultRangeValues();
   filterAndDisplayCards();
 }
