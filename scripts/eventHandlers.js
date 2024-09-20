@@ -26,6 +26,7 @@ export function setupEventHandlers() {
   const clearRarityButton = document.querySelector(".clear-rarity-button");
   const clearSearchButton = document.querySelector(".clear-search");
   const inputElements = document.querySelectorAll("input");
+  const backToTopButton = document.getElementById("back-to-top");
 
   sortSelect.addEventListener("change", filterAndDisplayCards);
 
@@ -190,4 +191,6 @@ export function setupEventHandlers() {
     searchInputEff.value = "";
     searchInputGlobal.value = "";
   }
+
 }
+
