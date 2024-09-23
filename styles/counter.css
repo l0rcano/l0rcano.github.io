@@ -1,0 +1,182 @@
+/* Ajustes globales */
+body, html {
+    font-family: 'Waltograph', 'Anta', 'Lato', 'arial', cursive;
+    background-image: url('../resources/bglorcano.webp');
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.container {
+    flex: 1;
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+#player-count {
+    margin-bottom: 20px;
+}
+
+/* Layout responsive para los contadores */
+#counters {
+    display: grid;
+    grid-gap: 20px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Para 2 jugadores: disposición vertical */
+.two-players #counters {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+
+/* Para 4 jugadores: disposición en 2x2 */
+.four-players #counters {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    animation: none;
+    transition: background-color 0.3s ease; 
+    margin-top: 16%;
+    margin-bottom: 16%;
+}
+
+.counter.lore-progress {
+    transition: background-color 0.3s ease; 
+}
+
+.count-display {
+    font-size: 600%;
+    width: 40%;
+    text-align: center;
+}
+
+button {
+    background-color: #000; 
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 55px;
+    border: 1px solid black;
+    font-size: 24px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #FF9800;
+}
+
+.increment-btn, .decrement-btn {
+    width: 50px;
+    height: 50px;
+}
+
+/* Animaciones */
+.animate-up {
+    animation: bounce-up 0.3s ease;
+}
+
+.animate-down {
+    animation: bounce-down 0.3s ease;
+}
+
+.win-animation {
+    animation: pulse 0.5s infinite;
+}
+
+@keyframes bounce-up {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes bounce-down {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Animación cuando alguien alcanza 20 de lore */
+@keyframes lore-reached {
+    0% { background-color: rgba(255, 255, 255, 0.7); }
+    50% { background-color: rgba(255, 223, 0, 0.7); }
+    100% { background-color: rgba(255, 255, 255, 0.7); }
+}
+
+.lore-reached {
+    animation: lore-reached 1s ease infinite;
+}
+
+/* Tema oscuro */
+.dark-theme {
+    background-color: #000;
+    color: white;
+    background-image: none;
+}
+
+.dark-theme .container {
+    background-color: rgba(50, 50, 50, 0.9);
+}
+
+.dark-theme button {
+    background-color: white;
+    color: black;
+}
+
+.dark-theme button:hover {
+    background-color: #FF9800;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .counter {
+        padding: 10px;
+    }
+
+    .count-display {
+        font-size: 400%;
+    }
+
+    button {
+        font-size: 20px;
+    }
+}

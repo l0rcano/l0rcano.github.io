@@ -4,21 +4,20 @@ const modalImg = document.getElementById('modal-img');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 
-let currentIndex = -1; // Para rastrear la carta actualmente mostrada
-let images = []; // Array para almacenar las fuentes de imagen
+let currentIndex = -1; 
+let images = []; 
 
 function showModal(imageSrc) {
     modalImg.src = imageSrc;
     modal.style.display = 'block';
     
-    // Encontrar el índice de la carta actual
     currentIndex = images.indexOf(imageSrc);
     updateButtonVisibility();
     updateImagePosition(); 
 }
 function updateImagePosition() {
-    modalImg.style.margin = 'auto'; // Centra la imagen
-    modalImg.style.display = 'block'; // Asegúrate de que esté visible
+    modalImg.style.margin = 'auto'; 
+    modalImg.style.display = 'block'; 
 }
 function closeModal() {
     modal.style.display = 'none';
