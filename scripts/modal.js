@@ -14,8 +14,12 @@ function showModal(imageSrc) {
     // Encontrar el índice de la carta actual
     currentIndex = images.indexOf(imageSrc);
     updateButtonVisibility();
+    updateImagePosition(); 
 }
-
+function updateImagePosition() {
+    modalImg.style.margin = 'auto'; // Centra la imagen
+    modalImg.style.display = 'block'; // Asegúrate de que esté visible
+}
 function closeModal() {
     modal.style.display = 'none';
 }
