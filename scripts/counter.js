@@ -144,12 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     themeToggle.addEventListener('click', () => {
-        if (body.classList.contains('dark-theme')) {
-            body.classList.remove('dark-theme');
-        } else {
-            body.classList.add('dark-theme');
-        }
+        body.classList.toggle('dark-theme'); 
+    
+        counters.forEach(counterDisplay => {
+            const count = parseInt(counterDisplay.textContent);
+            const parentDiv = counterDisplay.parentElement;
+            parentDiv.style.backgroundColor = calculateLoreColor(count); 
+        });
     });
+    
 
     updateCounters();
 });
