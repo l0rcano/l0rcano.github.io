@@ -67,3 +67,29 @@ window.addEventListener('keydown', function(event) {
         }
     }
 });
+
+let touchStartX = 0;
+let touchEndX = 0;
+const MIN_SWIPE_DISTANCE = 50; 
+
+modal.addEventListener('touchstart', (event) => {
+    touchStartX = event.changedTouches[0].clientX; 
+});
+
+modal.addEventListener('touchmove', (event) => {
+    touchEndX = event.changedTouches[0].clientX;
+});
+
+modal.addEventListener('touchend', () => {
+    handleGesture(); 
+});
+
+function handleGesture() {
+    const distance = touchEndX - touchStartX; 
+
+    if (distance < -MIN_SWIPE_DISTANCE) {
+        document.getElementById('next-btn').click(); 
+    } else if (distance > MIN_SWIPE_DISTANCE) {
+        document.getElementById('prev-btn').click();
+    }
+}
