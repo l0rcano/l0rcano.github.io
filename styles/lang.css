@@ -1,0 +1,9 @@
+.idioma{
+    background-color: #000;
+    color: #fff;
+}
+
+.activeIdioma{
+    background-color: #fff;
+    color: #000;
+}

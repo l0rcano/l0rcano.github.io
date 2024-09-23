@@ -93,3 +93,18 @@ function handleGesture() {
         document.getElementById('prev-btn').click();
     }
 }
+
+let currentLanguage = 'EN';
+
+function updateLanguageButtons() {
+    const btnEN = document.getElementById('toggleIdiomaEN');
+    const btnFR = document.getElementById('toggleIdiomaFR');
+    
+    if (currentLanguage === 'EN') {
+        btnEN.style.display = 'none';
+        btnFR.style.display = 'inline-block';
+    } else {
+        btnEN.style.display = 'inline-block';
+        btnFR.style.display = 'none';
+    }
+}

@@ -194,14 +194,31 @@ export function setupEventHandlers() {
     searchInputGlobal.value = "";
   }
 
-  toggleIdiomaEN.addEventListener("click", function () {
-    setIdioma("EN");
-    updateContent();
-});
 
-toggleIdiomaFR.addEventListener("click", function () {
-    setIdioma("FR");
-    updateContent();
+  // idioma
+  const idiomas = [
+    { code: "EN", button: toggleIdiomaEN },
+    { code: "FR", button: toggleIdiomaFR },
+];
+
+idiomas.forEach(({ code, button }) => {
+    button.addEventListener("click", function () {
+        setIdioma(code);
+
+        idiomas.forEach(({ button: btn }) => {
+            if (btn === button) {
+                btn.classList.add("activeIdioma");
+                btn.style.backgroundColor = '#fff';
+                btn.style.color = '#000';
+            } else {
+                btn.classList.remove("activeIdioma");
+                btn.style.backgroundColor = '#000';
+                btn.style.color = '#fff';
+            }
+        });
+
+        updateContent();
+    });
 });
 
 function updateContent() {

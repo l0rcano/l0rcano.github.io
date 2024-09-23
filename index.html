@@ -25,6 +25,7 @@ crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/rang.css">
     <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/filtres.css">
+    <link rel="stylesheet" href="styles/lang.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="icon" type="image/png" href="resources/favicon.png">
 </head>
@@ -39,9 +40,10 @@ crossorigin="anonymous"></script>
     </div>
     <br>
     <br>
+    <!-- lang -->
     <div id="idioma">
-        <button id="toggleIdiomaEN">EN</button>
-        <button id="toggleIdiomaFR">FR</button>
+        <button class="idioma activeIdioma" id="toggleIdiomaEN">EN</button>
+        <button class="idioma" id="toggleIdiomaFR">FR</button>
     </div>
 
     <div id="filtres-global">
@@ -231,6 +233,8 @@ crossorigin="anonymous"></script>
         <button class="modalbtn" id="prev-btn"><img src="resources/la2.png" alt="&lt;"></button>
         <img class="modal-content" id="modal-img">
         <button class="modalbtn" id="next-btn"><img src="resources/ra2.png" alt="&gt;"></button>
+        <button id="toggleIdiomaEN" class="lang-btn">EN</button>
+        <button id="toggleIdiomaFR" class="lang-btn">FR</button>
     </div>
     
 

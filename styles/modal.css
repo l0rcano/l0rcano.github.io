@@ -39,11 +39,14 @@
 
 #prev-btn {
   left: 20px;
-  /* left: -50px;  */
 }
 
 #next-btn {
   right: 20px; 
+}
+#prev-btn, #next-btn {
+  width: 50px; 
+  height: 50px; 
 }
 
 /* Estilo para el botón de cerrar */
@@ -61,5 +64,26 @@
 .close:focus {
   color: #bbb;
   text-decoration: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  #prev-btn {
+      left: 20px;
+  }
+  
+  #next-btn {
+      right: 20px;
+  }
+}
+
+.lang-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
+  padding: 10px;
   cursor: pointer;
 }
