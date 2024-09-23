@@ -11,18 +11,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para calcular el color entre blanco y #ffa4a4
     function calculateLoreColor(lore) {
         const maxLore = 20;
-        const minColor = [255, 255, 255];  // Color blanco (rgb(255, 255, 255))
-        const maxColor = [255, 164, 164];  // Color rojo claro (rgb(255, 164, 164))
-
+        const minColor = [255, 255, 255];  
+        const maxColor = [255, 164, 164]; 
+        const darkMinColor = [50, 50, 50];
+        const darkMaxColor = [150, 50, 50];
+    
+        if (lore === maxLore) {
+            if (document.body.classList.contains('dark-theme')) {
+                return `rgba(${darkMaxColor[0]}, ${darkMaxColor[1]}, ${darkMaxColor[2]}, 0.9)`; 
+            }
+            return `rgba(${maxColor[0]}, ${maxColor[1]}, ${maxColor[2]}, 0.7)`;
+        }
+    
         const ratio = lore / maxLore;
-
-        // Interpolación del color (R, G, B)
+    
         const r = Math.round(minColor[0] + ratio * (maxColor[0] - minColor[0]));
         const g = Math.round(minColor[1] + ratio * (maxColor[1] - minColor[1]));
         const b = Math.round(minColor[2] + ratio * (maxColor[2] - minColor[2]));
-
+    
+        if (document.body.classList.contains('dark-theme')) {
+            const darkR = Math.round(darkMinColor[0] + ratio * (darkMaxColor[0] - darkMinColor[0]));
+            const darkG = Math.round(darkMinColor[1] + ratio * (darkMaxColor[1] - darkMinColor[1]));
+            const darkB = Math.round(darkMinColor[2] + ratio * (darkMaxColor[2] - darkMinColor[2]));
+            return `rgb(${darkR}, ${darkG}, ${darkB})`;
+        }
+    
         return `rgb(${r}, ${g}, ${b})`;
     }
+    
+    
 
     function createCounter(index) {
         const counterDiv = document.createElement('div');
@@ -57,10 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 counterDiv.classList.add('animate-up');
                 setTimeout(() => counterDiv.classList.remove('animate-up'), 300);
             }
-            
+        
             const newColor = calculateLoreColor(count);
             counterDiv.style.backgroundColor = newColor;
-    
+        
             if (count === 20) {
                 counterDiv.classList.add('win-animation');
                 console.log("victoria");
@@ -69,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             }
         });
-    
+        
         decrementBtn.addEventListener('click', () => {
             let count = parseInt(countDisplay.textContent);
             if (count > 0) {
@@ -78,14 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 counterDiv.classList.add('animate-down');
                 setTimeout(() => counterDiv.classList.remove('animate-down'), 300);
             }
-    
+        
             const newColor = calculateLoreColor(count);
             counterDiv.style.backgroundColor = newColor;
-    
+        
             if (count < 20) {
                 counterDiv.classList.remove('win-animation');
             }
         });
+        
+        
     
         counterDiv.appendChild(decrementBtn);
         counterDiv.appendChild(countDisplay);
@@ -118,9 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
             counter.textContent = '0';
             const parentDiv = counter.parentElement;
             parentDiv.classList.remove('win-animation');
-            parentDiv.style.backgroundColor = calculateLoreColor(0); 
+            parentDiv.style.backgroundColor = calculateLoreColor(0);
         });
     });
+    
+    
 
     themeToggle.addEventListener('click', () => {
         if (body.classList.contains('dark-theme')) {
