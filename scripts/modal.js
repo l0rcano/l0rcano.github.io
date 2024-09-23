@@ -59,4 +59,11 @@ window.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && modal.style.display === 'block') {
         closeModal();
     }
+    if (modal.style.display === 'block') {
+        if (event.key === 'ArrowLeft') {
+            document.getElementById('prev-btn').click(); 
+        } else if (event.key === 'ArrowRight') {
+            document.getElementById('next-btn').click();
+        }
+    }
 });
