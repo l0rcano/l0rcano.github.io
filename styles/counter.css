@@ -79,7 +79,6 @@ h1 {
     width: 40%;
     text-align: center;
 }
-
 button {
     background-color: #000; 
     color: white;
@@ -90,9 +89,29 @@ button {
     font-size: 24px;
     transition: background-color 0.3s ease;
 }
+.image-btn {
+    background-color: transparent; 
+    color: white; 
+    padding: 0; 
+    border: none; 
+    cursor: pointer;
+    font-size: 24px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 100%; 
+    height: 100%; 
+}
+
+.increment-btn, .decrement-btn {
+    width: 30px; 
+    height: auto; 
+}
+
 
 button:hover {
-    background-color: #FF9800;
+    transform: scale(1.20); 
+    transition: transform 0.2s ease; 
 }
 
 .increment-btn, .decrement-btn {

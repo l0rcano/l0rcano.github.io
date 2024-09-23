@@ -34,11 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const decrementBtn = document.createElement('button');
         const decrementImg = document.createElement('img');
         decrementImg.src = '/resources/menos.png';
-        decrementImg.alt = 'Decrementar';
-        decrementImg.style.width = '30px'; // Ajusta el tamaño de la imagen si es necesario
-        decrementImg.style.height = '30px';
+        decrementImg.alt = '-';
         decrementBtn.appendChild(decrementImg);
-        decrementBtn.classList.add('decrement-btn');
+        decrementBtn.classList.add('decrement-btn', 'image-btn');
     
         const countDisplay = document.createElement('span');
         countDisplay.classList.add('count-display');
@@ -47,11 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const incrementBtn = document.createElement('button');
         const incrementImg = document.createElement('img');
         incrementImg.src = '/resources/mas.png';
-        incrementImg.alt = 'Incrementar';
-        incrementImg.style.width = '30px'; // Ajusta el tamaño de la imagen si es necesario
-        incrementImg.style.height = '30px';
+        incrementImg.alt = '+';
         incrementBtn.appendChild(incrementImg);
-        incrementBtn.classList.add('increment-btn');
+        incrementBtn.classList.add('increment-btn', 'image-btn');
     
         incrementBtn.addEventListener('click', () => {
             let count = parseInt(countDisplay.textContent);
