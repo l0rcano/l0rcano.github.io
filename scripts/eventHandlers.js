@@ -195,12 +195,12 @@ export function setupEventHandlers() {
   }
 
   toggleIdiomaEN.addEventListener("click", function () {
-    setIdioma("en");
+    setIdioma("EN");
     updateContent();
 });
 
 toggleIdiomaFR.addEventListener("click", function () {
-    setIdioma("fr");
+    setIdioma("FR");
     updateContent();
 });
 

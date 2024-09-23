@@ -1,4 +1,4 @@
-let idioma = "en";
+let idioma = "EN";
 
 export function setIdioma(newIdioma) {
   idioma = newIdioma;
