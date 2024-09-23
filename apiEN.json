@@ -28919,5 +28919,33 @@
             "Date_Modified": "2024-08-29 16:27:12.0",
             "Set_ID": "SSK",
             "Enchanted": true
+        },
+        {
+          "Artist": "Nicolas Kole",
+          "Date_Added": "2023-08-18T12:00",
+          "Gamemode": "Lorcana",
+          "Image": "https://lorcana-api.com/images/mickey_mouse/brave_little_tailor/mickey_mouse-brave_little_tailor-large.png",
+          "Cost": 8,
+          "Inkable": true,
+          "Name": "Mickey Mouse - Brave Little Tailor Gold Enchanted",
+          "Flavor_Text": "When defeat looms and victory hangs by a thread, a hero bolts to the rescue, patching things up through shear determination.",
+          "Set_ID": "TFC",
+          "Set_Name": "The First Chapter",
+          "Classifications": "Dreamborn, Hero",
+          "Abilities": "Evasive",
+          "Set_Num": 1,
+          "Color": "Ruby",
+          "Franchise": "",
+          "Type": "Character",
+          "Lore": 4,
+          "Rarity": "Enchanted",
+          "Unique_ID": "TFC-115",
+          "Card_Num": 115,
+          "Body_Text": "Evasive (Only characters with Evasive can challenge this character.)",
+          "Willpower": 5,
+          "Card_Variants": "",
+          "Date_Modified": "2024-08-29 16:27:12.0",
+          "Strength": 5,
+          "Enchanted": true
         }
     ]

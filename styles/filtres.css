@@ -91,7 +91,11 @@
 }
 
 /* Botons de filtres */
+
 .show-filters {
+    float: right;
+}
+#idioma {
     float: right;
 }
 

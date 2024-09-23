@@ -1,6 +1,8 @@
 import { filterAndDisplayCards, resetFilters, validateRange } from "./filters.js";
 import { getCardsDisplayed, setCardsDisplayed } from "./display.js";
-import { cardsData } from "./api.js";
+import { setIdioma, updateApiUrl } from "./lang.js";
+import { cardsData, fetchCardsData  } from "./api.js";
+
 
 let isOrderReversed = false;
 
@@ -26,6 +28,9 @@ export function setupEventHandlers() {
   const clearRarityButton = document.querySelector(".clear-rarity-button");
   const clearSearchButton = document.querySelector(".clear-search");
   const inputElements = document.querySelectorAll("input");
+  const toggleIdiomaEN = document.getElementById("toggleIdiomaEN");
+  const toggleIdiomaFR = document.getElementById("toggleIdiomaFR");
+  
 
   colorFilters.forEach((filter) => {
     filter.addEventListener("click", function () {
@@ -188,6 +193,25 @@ export function setupEventHandlers() {
     searchInputEff.value = "";
     searchInputGlobal.value = "";
   }
+
+  toggleIdiomaEN.addEventListener("click", function () {
+    setIdioma("en");
+    updateContent();
+});
+
+toggleIdiomaFR.addEventListener("click", function () {
+    setIdioma("fr");
+    updateContent();
+});
+
+function updateContent() {
+  fetchCardsData().then(() => {
+      filterAndDisplayCards(); 
+  });
+}
+
+
+
 
 }
 
