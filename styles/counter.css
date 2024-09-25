@@ -233,6 +233,6 @@ button:hover {
     left: 10px; 
     top: 10px;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(50, 50, 50, 0.5);
     border-radius: 5px;
 }
