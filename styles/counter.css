@@ -196,8 +196,7 @@ button:hover {
 /* .dark-theme button:hover {
     background-color: #FF9800;
 } */
-.dark-theme button:hover, 
-.dark-theme button:active {
+.dark-theme button:hover {
     background-color: #FF9800;
 }
 @media (hover: none) {
