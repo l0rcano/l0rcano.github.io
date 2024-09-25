@@ -193,9 +193,20 @@ button:hover {
     color: black;
 }
 
-.dark-theme button:hover {
+/* .dark-theme button:hover {
+    background-color: #FF9800;
+} */
+.dark-theme button:hover, 
+.dark-theme button:active {
     background-color: #FF9800;
 }
+
+.dark-theme button {
+    background-color: white;
+    color: black;
+    -webkit-tap-highlight-color: transparent;
+}
+
 
 /* Ajustes responsivos */
 @media (max-width: 600px) {
