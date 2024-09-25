@@ -196,11 +196,12 @@ button:hover {
 /* .dark-theme button:hover {
     background-color: #FF9800;
 } */
-.dark-theme button:hover {
+.dark-theme button:hover, 
+.dark-theme button:active {
     background-color: #FF9800;
 }
 @media (hover: none) {
-    button:hover {
+    .dark-theme button:hover {
         background-color: white;
         transform: none;  
     }
