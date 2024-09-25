@@ -155,4 +155,52 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     updateCounters();
+
+    let wakeLock = null;
+
+// Función para solicitar el Wake Lock
+async function requestWakeLock() {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('Wake Lock activado');
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+// Función para liberar el Wake Lock
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release()
+            .then(() => {
+                console.log('Wake Lock liberado');
+                wakeLock = null;
+            });
+    }
+}
+
+// Wake Lock
+const wakeLockButton = document.getElementById('wake-lock-btn');
+let wakeLockActive = false;
+
+wakeLockButton.addEventListener('click', () => {
+    if (!wakeLockActive) {
+        requestWakeLock();
+        wakeLockButton.textContent = 'Desactivar bloqueig de pantalla';
+        wakeLockActive = true;
+    } else {
+        releaseWakeLock();
+        wakeLockButton.textContent = 'No bloquejar la pantalla';
+        wakeLockActive = false;
+    }
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (wakeLock !== null && document.visibilityState === 'hidden') {
+        releaseWakeLock();
+        wakeLockButton.textContent = 'No bloquejar la pantalla';
+        wakeLockActive = false;
+    }
+});
+
 });
