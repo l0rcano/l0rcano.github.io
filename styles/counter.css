@@ -200,6 +200,17 @@ button:hover {
 .dark-theme button:active {
     background-color: #FF9800;
 }
+@media (hover: none) {
+    button:hover {
+        background-color: white;
+        transform: none;  
+    }
+
+    .dark-theme button:active {
+        transform: scale(1.20); 
+        background-color: white;
+    }
+}
 
 .dark-theme button {
     background-color: white;
