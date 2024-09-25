@@ -9,5 +9,5 @@ export function getIdioma() {
 }
 
 export function updateApiUrl() {
-  return `../api${idioma}.json`;
+  return `../api/api${idioma}.json`;
 }

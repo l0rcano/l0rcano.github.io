@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html lang="cat">
+
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2HLK7MQ2SL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2HLK7MQ2SL');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/counter.css">
-    <title>Contador de Lore</title>
+    <title>Comptador de Lore</title>
 </head>
+
 <body>
+    <a id="torna" href="/">Torna</a>
     <div class="container">
-        <h1>Contador de Lore</h1>
+        <!-- <h1>Comptador de Lore</h1> -->
         <div id="player-count">
-            <label for="num-players">Número de Jugadors:</label>
+            <label for="num-players">Nombre de Jugadors:</label>
             <select id="num-players">
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -20,9 +32,10 @@
         <div id="counters"></div>
         <div class="buttons">
             <button id="reset-btn">Reiniciar</button>
-            <button id="theme-toggle">Cambiar tema</button>
+            <button id="theme-toggle">Canviar tema</button>
         </div>
     </div>
     <script src="scripts/counter.js"></script>
 </body>
+
 </html>

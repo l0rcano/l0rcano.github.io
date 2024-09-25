@@ -110,9 +110,20 @@ button {
 
 
 button:hover {
-    transform: scale(1.20); 
-    transition: transform 0.2s ease; 
+    transform: scale(1.20);
+    transition: transform 0.2s ease;
 }
+
+@media (hover: none) {
+    button:hover {
+        transform: none;  
+    }
+
+    button:active {
+        transform: scale(1.20); 
+    }
+}
+
 
 .increment-btn, .decrement-btn {
     width: 50px;
@@ -198,4 +209,14 @@ button:hover {
     button {
         font-size: 20px;
     }
+}
+#torna {
+    text-decoration: none;
+    color: white;
+    position: fixed;
+    left: 10px; 
+    top: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
 }
