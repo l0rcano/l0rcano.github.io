@@ -1,4 +1,5 @@
 # https://lorcanajson.org/
+# script per a baixar totes les fotos de la API_URL i guardarles al SAVE_DIR
 
 import requests
 from PIL import Image, ImageOps
@@ -7,8 +8,8 @@ import os
 import re
 
 # URL de la API
-API_URL = 'https://lorcanajson.org/files/current/en/allCards.json'
-SAVE_DIR = 'cartas_lorcana'
+API_URL = 'https://lorcanajson.org/files/current/en/sets/setdata.6.json'
+SAVE_DIR = 'cartas_lorcana_set6'
 
 # Crear carpeta si no existe
 if not os.path.exists(SAVE_DIR):
