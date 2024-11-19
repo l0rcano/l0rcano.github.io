@@ -16490,7 +16490,7 @@
       "Cost": 4,
       "Inkable": true,
       "Name": "You Have Forgotten Me",
-      "Type": "Action - Song",
+      "Type": "Action",
       "Rarity": "Uncommon",
       "Flavor_Text": "\"You are more than what you have become.\"\n- Mufasa",
       "Unique_ID": "TFC-031",
