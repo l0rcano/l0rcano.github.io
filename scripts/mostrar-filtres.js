@@ -19,9 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchersContainer = document.getElementById("searchers");
 
   // Afegir classes inicials per a mostrar els filtres
-  if (document.title !== "Lorcano - Decks") {
+  // if (document.title !== "Lorcano - Decks") {
   filtersContainer.classList.add("showing");
-  }
+  // }
   filtersGlobal.classList.add("showing-general");
 
   // Funció per ocultar-ho tot
@@ -146,7 +146,5 @@ document.addEventListener("DOMContentLoaded", function () {
       searchersContainer.style.display = "block";
       showSearchButton.innerHTML = "Amaga els cercadors";
     }
-  });
-
-  
+  });  
 });
