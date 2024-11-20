@@ -119,9 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < playerCount; i++) {
             createCounter(i);
         }
-
+    
         if (playerCount === 2) {
             countersContainer.style.gridTemplateColumns = '1fr';
+        } else if (playerCount === 4) {
+            countersContainer.style.gridTemplateColumns = '1fr 1fr';
+            // Additional styling to rearrange the counters
+            const counters = countersContainer.children;
+            counters[0].style.order = 1; // Player 1
+            counters[1].style.order = 2; // Player 2
+            counters[2].style.order = 3; // Player 3
+            counters[3].style.order = 4; // Player 4
         } else {
             countersContainer.style.gridTemplateColumns = '1fr 1fr';
         }

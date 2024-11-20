@@ -52,8 +52,25 @@ h1 {
 
 /* Para 4 jugadores: disposición en 2x2 */
 .four-players #counters {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+}
+
+.counter:nth-child(1) {
+    grid-area: 1 / 1; /* Row 1, Column 1 */
+}
+
+.counter:nth-child(2) {
+    grid-area: 2 / 1; /* Row 2, Column 1 */
+}
+
+.counter:nth-child(3) {
+    grid-area: 1 / 2; /* Row 1, Column 2 */
+}
+
+.counter:nth-child(4) {
+    grid-area: 2 / 2; /* Row 2, Column 2 */
 }
 
 .counter {
@@ -68,6 +85,7 @@ h1 {
     transition: background-color 0.3s ease; 
     margin-top: 16%;
     margin-bottom: 16%;
+    order: 0;
 }
 
 .counter.lore-progress {
@@ -79,6 +97,7 @@ h1 {
     width: 40%;
     text-align: center;
 }
+
 button {
     background-color: #000; 
     color: white;
@@ -89,6 +108,7 @@ button {
     font-size: 24px;
     transition: background-color 0.3s ease;
 }
+
 #wake-lock-btn{
     margin-top: 3%;
     padding: none;
@@ -113,7 +133,6 @@ button {
     height: auto; 
 }
 
-
 button:hover {
     transform: scale(1.20);
     transition: transform 0.2s ease;
@@ -128,7 +147,6 @@ button:hover {
         transform: scale(1.20); 
     }
 }
-
 
 .increment-btn, .decrement-btn {
     width: 50px;
@@ -193,13 +211,11 @@ button:hover {
     color: black;
 }
 
-/* .dark-theme button:hover {
-    background-color: #FF9800;
-} */
 .dark-theme button:hover, 
 .dark-theme button:active {
     background-color: #FF9800;
 }
+
 @media (hover: none) {
     .dark-theme button:hover {
         background-color: white;
@@ -227,6 +243,7 @@ button:hover {
 
     .counter {
         padding: 10px;
+        transition: none;
     }
 
     .count-display {
@@ -236,7 +253,28 @@ button:hover {
     button {
         font-size: 20px;
     }
+
+    /* Rotar contadores 1 y 3 */
+    .counter:nth-child(1), 
+    .counter:nth-child(3) {
+        transform: rotate(180deg);
+        transition: none;
+    }
+
+    .animate-up {
+        animation: none;
+    }
+
+    .animate-down {
+        animation: none;
+    }
+
+    .win-animation {
+        animation: none;
+        transform: rotate(180deg);
+    }
 }
+
 #torna {
     text-decoration: none;
     color: white;
