@@ -1,10 +1,13 @@
 /* Estils generals */
 
-body, html {
+body,
+html {
   /* background-color: #f1f6f1; */
   font-family: 'Waltograph', 'Anta', 'Lato', 'arial', cursive;
-  background-color: #e4ebe4;
-  color: #333;
+  /* background-color: #e4ebe4; */
+  background-image: url('../resources/bglorcano.webp');
+  /* color: #333; */
+  color: #000;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -27,18 +30,22 @@ body, html {
     font-size: 18px;
   }
 }
-#loading-placeholder{
+
+#loading-placeholder {
   width: auto;
   height: 30px;
 }
 
-#placeholder{
+#placeholder {
   display: "block";
 
 }
+
 /* Estils per a botons i selects */
-button, select {
-  background-color: #000; 
+button,
+select,
+a {
+  background-color: #000;
   /* background-color: #FF9800; */
   color: white;
   padding: 5px 10px;
@@ -47,14 +54,34 @@ button, select {
   border-radius: 15px;
   border: 1px black solid;
 }
-.set-name{
-  min-width: 150px; 
-  text-align: center;
-  display: inline-block; 
-  white-space: nowrap; 
+a{
+  text-decoration: none;
+  margin-top: 2px;
+  padding-top: 2px;
 }
-button.actiu, select.actiu {
-  color: #000; 
+
+.set-name {
+  min-width: 150px;
+  text-align: center;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+button.actiu,
+select.actiu {
+  color: #000;
+}
+
+/* Estils per a la llista de cartes */
+.display-cards {
+  padding-top: 10px;
+  margin-top: 10px;
+  background-color: rgba(241, 246, 241, 0.15);
+  border-radius: 15px;
+}
+
+li{
+  color: black;
 }
 
 /* Estils per a la llista de fitxers */
@@ -66,7 +93,8 @@ button.actiu, select.actiu {
 }
 
 #file-list li {
-  width: calc(16.666% - 20px); /* 6 cartes per fila */
+  width: calc(16.666% - 20px);
+  /* 6 cartes per fila */
   text-align: center;
   margin: 0 10px 20px;
   display: flex;
@@ -85,21 +113,24 @@ button.actiu, select.actiu {
   max-height: 100%;
   width: auto;
   height: auto;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
+  border: 1px solid black;
   border-radius: 15px;
 }
 
 /* Estils per a pantalles mitjanes */
 @media screen and (max-width: 1200px) {
   #file-list li {
-    width: calc(20% - 20px); /* 5 cartes per fila */
+    width: calc(20% - 20px);
+    /* 5 cartes per fila */
   }
 }
 
 /* Estils per a pantalles petites */
 @media screen and (max-width: 800px) {
   #file-list li {
-    width: calc(33.333% - 20px); /* 3 cartes per fila */
+    width: calc(33.333% - 20px);
+    /* 3 cartes per fila */
   }
 }
 
@@ -110,4 +141,3 @@ button.actiu, select.actiu {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-
