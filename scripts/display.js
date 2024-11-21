@@ -20,6 +20,8 @@ export function displayCards(cards) {
     const listItem = document.createElement("li");
     const imageElement = document.createElement("img");
     imageElement.setAttribute("data-src", cardData.Image);
+    imageElement.setAttribute("data-card-name", cardData.Name);
+    imageElement.setAttribute("data-card-type", cardData.Type);
     imageElement.alt = cardData.Name;
     listItem.textContent = `${cardData.Name}`;
     listItem.appendChild(imageElement);

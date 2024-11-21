@@ -1,20 +1,51 @@
 const fileListElement = document.getElementById('file-list');
 const modal = document.getElementById('modal');
 const modalImg = document.getElementById('modal-img');
+const modalName = document.getElementById('modal-name');
+const modalType = document.getElementById('modal-type');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 
 let currentIndex = -1; 
 let images = []; 
 
-function showModal(imageSrc) {
-    modalImg.src = imageSrc;
-    modal.style.display = 'block';
+// function showModal(imageSrc, cardName, cardType) {
+//     modalImg.src = imageSrc;
+//     modalName.textContent = cardName;
+//     modalType.textContent = cardType;
+//     modal.style.display = 'block';
+//     console.log(`Card Name: ${cardName}`);
+//     console.log(`Card Type: ${cardType}`);
+//     if (cardType === "Location") {
+//         modalImg.classList.add('rotateLocation');
+//     } else {
+//         modalImg.classList.remove('rotateLocation');
+//     }
+//     currentIndex = images.indexOf(imageSrc);
+//     updateButtonVisibility();
+//     updateImagePosition(); 
     
+// }
+function showModal(imageSrc, cardName, cardType) {
+    updateModalImage(imageSrc, cardName, cardType);
+    modal.style.display = 'block';
     currentIndex = images.indexOf(imageSrc);
     updateButtonVisibility();
-    updateImagePosition(); 
+    updateImagePosition();
 }
+
+function updateModalImage(imageSrc, cardName, cardType) {
+    modalImg.src = imageSrc;
+    modalName.textContent = cardName;
+    modalType.textContent = cardType;
+
+    if (cardType === "Location") {
+        modalImg.classList.add('rotateLocation'); 
+    } else {
+        modalImg.classList.remove('rotateLocation'); 
+    }
+}
+
 function updateImagePosition() {
     modalImg.style.margin = 'auto'; 
     modalImg.style.display = 'block'; 
@@ -28,24 +59,35 @@ modal.querySelector('.close').addEventListener('click', closeModal);
 fileListElement.addEventListener('click', function (event) {
     if (event.target.tagName === 'IMG') {
         const imageSrc = event.target.src;
+        const cardName = event.target.getAttribute('data-card-name');
+        const cardType = event.target.getAttribute('data-card-type');
+                
         images = Array.from(fileListElement.querySelectorAll('img')).map(img => img.src);
-        showModal(imageSrc);
+        showModal(imageSrc, cardName, cardType);
     }
 });
 
 prevBtn.addEventListener('click', function() {
     if (currentIndex > 0) {
         currentIndex--;
-        modalImg.src = images[currentIndex];
-        updateButtonVisibility();
+        const imageSrc = images[currentIndex];
+        modalImg.src = imageSrc
+        const cardName = document.querySelector(`img[src="${imageSrc}"]`).getAttribute('data-card-name');
+        const cardType = document.querySelector(`img[src="${imageSrc}"]`).getAttribute('data-card-type');
+        updateModalImage(imageSrc, cardName, cardType);
+        updateButtonVisibility()
     }
 });
 
 nextBtn.addEventListener('click', function() {
     if (currentIndex < images.length - 1) {
         currentIndex++;
-        modalImg.src = images[currentIndex];
-        updateButtonVisibility();
+        const imageSrc = images[currentIndex];
+        modalImg.src = imageSrc
+        const cardName = document.querySelector(`img[src="${imageSrc}"]`).getAttribute('data-card-name');
+        const cardType = document.querySelector(`img[src="${imageSrc}"]`).getAttribute('data-card-type');
+        updateModalImage(imageSrc, cardName, cardType);
+        updateButtonVisibility()
     }
 });
 
@@ -97,17 +139,17 @@ function handleGesture() {
     }
 }
 
-let currentLanguage = 'EN';
+// let currentLanguage = 'EN';
 
-function updateLanguageButtons() {
-    const btnEN = document.getElementById('toggleIdiomaEN');
-    const btnFR = document.getElementById('toggleIdiomaFR');
+// function updateLanguageButtons() {
+//     const btnEN = document.getElementById('toggleIdiomaEN');
+//     const btnFR = document.getElementById('toggleIdiomaFR');
     
-    if (currentLanguage === 'EN') {
-        btnEN.style.display = 'none';
-        btnFR.style.display = 'inline-block';
-    } else {
-        btnEN.style.display = 'inline-block';
-        btnFR.style.display = 'none';
-    }
-}
+//     if (currentLanguage === 'EN') {
+//         btnEN.style.display = 'none';
+//         btnFR.style.display = 'inline-block';
+//     } else {
+//         btnEN.style.display = 'inline-block';
+//         btnFR.style.display = 'none';
+//     }
+// }
