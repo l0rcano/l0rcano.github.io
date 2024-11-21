@@ -113,6 +113,7 @@ button {
     margin-top: 3%;
     padding: none;
     font-size: 24px;
+    display: none;
 }
 .image-btn {
     background-color: transparent; 
@@ -138,15 +139,7 @@ button:hover {
     transition: transform 0.2s ease;
 }
 
-@media (hover: none) {
-    button:hover {
-        transform: none;  
-    }
 
-    button:active {
-        transform: scale(1.20); 
-    }
-}
 
 .increment-btn, .decrement-btn {
     width: 50px;
@@ -216,22 +209,56 @@ button:hover {
     background-color: #FF9800;
 }
 
+#torna {
+    text-decoration: none;
+    color: white;
+    position: fixed;
+    left: 10px; 
+    top: 10px;
+    padding: 10px;
+    background-color: rgba(50, 50, 50, 0.5);
+    border-radius: 5px;
+}
+.dark-theme .image-btn {
+    background-color: transparent;
+    color: black;
+    -webkit-tap-highlight-color: transparent;
+}
+.image-btn button {
+    background-color: transparent;
+    color: black;
+    -webkit-tap-highlight-color: transparent;
+}
+
 @media (hover: none) {
-    .dark-theme button:hover {
-        background-color: white;
-        transform: none;  
+    .dark-theme .image-btn:hover {
+        /* transform: none;   */
+        background-color: transparent;
+    }
+
+    .dark-theme button:hover, 
+    .dark-theme button:active {
+    background-color: white;
     }
 
     .dark-theme button:active {
         transform: scale(1.20); 
-        background-color: white;
+        background-color: pink;
+        
     }
-}
+    button:hover {
+        transform: none;  
+    }
 
-.dark-theme button {
-    background-color: white;
-    color: black;
-    -webkit-tap-highlight-color: transparent;
+    button:active {
+        transform: scale(1.20); 
+    }
+    #wake-lock-btn{
+        margin-top: 3%;
+        padding: none;
+        font-size: 24px;
+        display: inline-block;
+    }
 }
 
 
@@ -254,6 +281,11 @@ button:hover {
         font-size: 20px;
     }
 
+    img{
+        width: 45px;
+        height: auto;
+    }
+
     /* Rotar contadores 1 y 3 */
     .counter:nth-child(1), 
     .counter:nth-child(3) {
@@ -271,17 +303,6 @@ button:hover {
 
     .win-animation {
         animation: none;
-        transform: rotate(180deg);
     }
 }
 
-#torna {
-    text-decoration: none;
-    color: white;
-    position: fixed;
-    left: 10px; 
-    top: 10px;
-    padding: 10px;
-    background-color: rgba(50, 50, 50, 0.5);
-    border-radius: 5px;
-}
