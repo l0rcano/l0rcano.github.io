@@ -109,6 +109,15 @@ button {
     transition: background-color 0.3s ease;
 }
 
+#accept-cookies, #decline-cookies{
+    background-color: #000;
+    color: white;
+    padding: none;
+    cursor: pointer;
+    border-radius: 55px;
+    font-size: 16px;
+}
+
 #wake-lock-btn{
     margin-top: 3%;
     padding: none;
