@@ -4,8 +4,8 @@ from googletrans import Translator
 # Inicializa el traductor
 translator = Translator()
 
-# Lee el archivo apiEN.json
-with open('apiEN.json', 'r', encoding='utf-8') as file:
+# Lee el archivo newSet.json
+with open('newSet.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 # Función para traducir texto al francés
@@ -31,8 +31,8 @@ for i, carta in enumerate(data):
         carta['Body_Text'] = traducir_texto(carta.get('Body_Text', ''))
         print(f"Línea {i + 1}: 'Body_Text' traducido a '{carta['Body_Text']}'")
 
-# Guarda el archivo traducido como apiFR.json
-with open('apiFR.json', 'w', encoding='utf-8') as file:
+# Guarda el archivo traducido como newSetFR.json
+with open('newSetFR.json', 'w', encoding='utf-8') as file:
     json.dump(data, file, ensure_ascii=False, indent=4)
 
-print("Traducción completada y guardada en 'apiFR.json'.")
+print("Traducción completada y guardada en 'newSetFR.json'.")

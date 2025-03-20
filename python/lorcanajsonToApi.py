@@ -14,7 +14,7 @@ def transform_card_data(card):
     
     return {
         "Artist": card.get("artistsText", ""),  # Si no tiene, asigna cadena vacía
-        "Set_Name": "Azurite Sea",  # Nombre estático del set
+        "Set_Name": "Archazia's Island",  # Nombre estático del set
         "Classifications": ", ".join(card.get("subtypes", [])),  # Asigna lista vacía si no tiene subtipos
         "Date_Added": current_date_added,
         "Set_Num": 6,  # Número de set estático
@@ -40,7 +40,7 @@ def transform_card_data(card):
     }
 
 # Cargar el archivo JSON original
-input_file = "lorcanajson.json"  # Asegúrate de que el archivo exista en el mismo directorio
+input_file = "api7.json"  # Asegúrate de que el archivo exista en el mismo directorio
 output_file = "newSet.json"
 
 with open(input_file, "r", encoding="utf-8") as file:
