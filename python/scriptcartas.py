@@ -8,8 +8,8 @@ import os
 import re
 
 # URL de la API
-API_URL = 'https://lorcanajson.org/files/current/en/sets/setdata.6.json'
-SAVE_DIR = 'cartas_lorcana_set6'
+API_URL = 'https://lorcanajson.org/files/current/en/sets/setdata.7.json'
+SAVE_DIR = 'cartas_lorcana_set7'
 
 # Crear carpeta si no existe
 if not os.path.exists(SAVE_DIR):
