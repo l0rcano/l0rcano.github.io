@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const cookieConsent = localStorage.getItem('cookieConsent');
 
-    if (!cookieConsent) {
+    if (cookieConsent === null) {
         banner.style.display = 'block';
+    } else {
+        banner.style.display = 'none';
     }
 
     acceptButton.addEventListener('click', function() {
