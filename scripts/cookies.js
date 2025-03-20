@@ -3,14 +3,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const acceptButton = document.getElementById('accept-cookies');
     const declineButton = document.getElementById('decline-cookies');
 
-    if (!localStorage.getItem('cookieConsent')) {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+
+    if (!cookieConsent) {
         banner.style.display = 'block';
     }
 
     acceptButton.addEventListener('click', function() {
         localStorage.setItem('cookieConsent', 'accepted');
         banner.style.display = 'none';
-        loadAds();
     });
 
     declineButton.addEventListener('click', function() {
@@ -18,16 +19,12 @@ document.addEventListener("DOMContentLoaded", function() {
         banner.style.display = 'none';
     });
 
-    if (localStorage.getItem('cookieConsent') === 'accepted') {
-        loadAds();
-    }
+    loadAds();
 });
 
 function loadAds() {
-    if (localStorage.getItem('cookieConsent') === 'accepted') {
-        console.log("Galetes acceptades")
-        // const script = document.createElement('script');
-        // script.src = 'URL_DEL_SCRIPT_DE_PUBLICIDAD'; //s'ha de substituir per l'enllaç a adsense
-        // document.head.appendChild(script);
-    }
+    console.log("Cargando publicidad...");
+    // const script = document.createElement('script');
+    // script.src = 'URL_DEL_SCRIPT_DE_PUBLICIDAD'; // Reemplaza con el enlace correcto
+    // document.head.appendChild(script);
 }
