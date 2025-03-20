@@ -1,0 +1,15 @@
+
+1.- copiar el set en qüestió a "newapi.json" de https://lorcanajson.org/#downloads
+
+2.- modificar lorcanajsonToApi per introduir les dades del nou set 
+
+3.- anar a la carpeta de python
+cd .\python\
+
+4.- activar el python per a transformar les dades
+python .\lorcanajsonToApi.py
+
+5.-traduir les dades al francés
+python .\tr2.py
+
+6.- afegir les traduccions tant de newSet.json (anglés) comm de newSetFR.json (francés) a les apis corresponents

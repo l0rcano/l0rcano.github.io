@@ -26,10 +26,10 @@ def transform_card_data(card):
 
     return {
         "Artist": card.get("artistsText", ""),  # Si no tiene, asigna cadena vacía
-        "Set_Name": "Archazia's Island",  # Nombre estático del set                                            #MODIFICAR EN CAS DE SET NOU
+        "Set_Name": "Azurite Sea",  # Nombre estático del set-------------------------------------------#MODIFICAR EN CAS DE SET NOU
         "Classifications": ", ".join(card.get("subtypes", [])),  # Asigna lista vacía si no tiene subtipos
         "Date_Added": current_date_added,
-        "Set_Num": 7,  # Número de set estático                                                                #MODIFICAR EN CAS DE SET NOU
+        "Set_Num": 6,  # Número de set estático---------------------------------------------------------#MODIFICAR EN CAS DE SET NOU
         "Color": card.get("color", ""),  # Si no tiene, asigna cadena vacía
         "Franchise": card.get("story", ""),  # Si no tiene, asigna cadena vacía
         "Image": card.get("images", {}).get("full", ""),  # Si no tiene, asigna cadena vacía
@@ -47,7 +47,7 @@ def transform_card_data(card):
         "Card_Variants": card.get("variants", ""),  # Si no tiene, asigna cadena vacía
         "Date_Modified": current_date_modified,
         "Strength": card.get("strength", 0),  # Si no tiene, asigna 0
-        "Set_ID": "ARI",  # Set estático                                                                        #MODIFICAR EN CAS DE SET NOU
+        "Set_ID": "AZU",  # Set estático-----------------------------------------------------------------#MODIFICAR EN CAS DE SET NOU
         "Enchanted": "Enchanted" in card.get("fullName", "")  # Verifica si está "enchanted" en el nombre
     }
 
