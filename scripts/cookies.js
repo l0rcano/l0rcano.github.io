@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadAds() {
-    console.log("Cargando publicidad...");
+    console.log("loadAds test");
     // const script = document.createElement('script');
     // script.src = 'URL_DEL_SCRIPT_DE_PUBLICIDAD'; // Reemplaza con el enlace correcto
     // document.head.appendChild(script);
