@@ -12,12 +12,24 @@ def transform_card_data(card):
     if abilities and isinstance(abilities, list) and len(abilities) > 0:
         ability_text = f"{abilities[0].get('name', '')} - {abilities[0].get('effect', '')}"
     
+    # Verificar si la carta es "Enchanted"
+    is_enchanted = "Enchanted" in card.get("fullName", "")
+    
+    # Construir el nombre de la carta
+    card_name = card.get("name", "")
+    card_version = card.get("version", "")
+    name = f"{card_name} - {card_version}"
+    
+    # Añadir " Enchanted" al nombre si es enchanted
+    if is_enchanted:
+        name += " Enchanted"
+
     return {
         "Artist": card.get("artistsText", ""),  # Si no tiene, asigna cadena vacía
-        "Set_Name": "Archazia's Island",  # Nombre estático del set                                          #MODIFICAR EN CAS DE SET NOU
+        "Set_Name": "Archazia's Island",  # Nombre estático del set                                            #MODIFICAR EN CAS DE SET NOU
         "Classifications": ", ".join(card.get("subtypes", [])),  # Asigna lista vacía si no tiene subtipos
         "Date_Added": current_date_added,
-        "Set_Num": 7,  # Número de set estático                                                               #MODIFICAR EN CAS DE SET NOU
+        "Set_Num": 7,  # Número de set estático                                                                #MODIFICAR EN CAS DE SET NOU
         "Color": card.get("color", ""),  # Si no tiene, asigna cadena vacía
         "Franchise": card.get("story", ""),  # Si no tiene, asigna cadena vacía
         "Image": card.get("images", {}).get("full", ""),  # Si no tiene, asigna cadena vacía
