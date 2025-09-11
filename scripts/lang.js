@@ -8,6 +8,10 @@ export function getIdioma() {
   return idioma;
 }
 
+// export function updateApiUrl() {
+//   return `../api/api${idioma}.json`;
+// }
 export function updateApiUrl() {
-  return `../api/api${idioma}.json`;
+  console.log("Dumbo");
+  return `../api/allcards_minimal.json`;
 }

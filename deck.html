@@ -1,286 +1,417 @@
 <!DOCTYPE html>
 <html lang="cat">
-
-<head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2HLK7MQ2SL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
+ <head>
+  <!-- Google tag (gtag.js) -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2HLK7MQ2SL">
+  </script>
+  <script>
+   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-2HLK7MQ2SL');
-</script>
-
-<!-- adsense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9400908441873602" crossorigin="anonymous">
-</script>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Crea els teus decks a LorcanaDex">
-    <title>Lorcano - Decks</title>
-    <link rel="stylesheet" href="styles/deck.css">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/rang.css">
-    <link rel="stylesheet" href="styles/filtres.css">
-    <link rel="stylesheet" href="styles/footer.css">
-
-    <link rel="icon" type="image/png" href="resources/favicon.png">
-</head>
-
-<body>
-    <div class="show-filters">
-        <a href="/">torna</a>
-        <button class="filtresBtn">
-            Amaga els filtres
-        </button>
+  </script>
+  <!-- adsense -->
+  <script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9400908441873602">
+  </script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="Crea els teus decks a LorcanaDex" name="description"/>
+  <title>
+   Lorcano - Decks
+  </title>
+  <link href="styles/deck.css" rel="stylesheet"/>
+  <link href="styles/styles.css" rel="stylesheet"/>
+  <link href="styles/rang.css" rel="stylesheet"/>
+  <link href="styles/filtres.css" rel="stylesheet"/>
+  <link href="styles/footer.css" rel="stylesheet"/>
+  <link href="resources/favicon.png" rel="icon" type="image/png"/>
+ </head>
+ <body>
+  <div class="show-filters">
+   <a href="/">
+    torna
+   </a>
+   <button class="filtresBtn">
+    Amaga els filtres
+   </button>
+  </div>
+  <br/>
+  <br/>
+  <div id="idioma">
+   <button id="toggleIdiomaEN">
+    EN
+   </button>
+   <button id="toggleIdiomaFR">
+    FR
+   </button>
+  </div>
+  <div id="filtres-global">
+   <!-- Filtre per endreçar -->
+   <div id="sort-per">
+    <label for="sort-select">
+     Endreça per:
+    </label>
+    <br/>
+    <select id="sort-select">
+     <option value="ink-cost">
+      Cost de tinta
+     </option>
+     <option value="name">
+      Nom
+     </option>
+     <option value="color">
+      Color
+     </option>
+     <option value="strength">
+      Poder
+     </option>
+     <option value="willpower">
+      Vida
+     </option>
+     <option value="lore">
+      Lore
+     </option>
+     <option value="card-number">
+      Número de carta
+     </option>
+    </select>
+    <!-- Invertir ordre -->
+    <button id="invert-order-button">
+     Invertir ordre
+    </button>
+    <!-- Eliminar filtres -->
+    <button id="clear-all">
+     Eliminar filtres
+    </button>
+   </div>
+   <br/>
+   <div id="botonsFiltres">
+    <button class="filtres-colors-Btn mostrar-opcions">
+     Mostra els filtres per colors
+    </button>
+    <button class="filtres-tipus-Btn mostrar-opcions">
+     Mostra els filtres per tipus
+    </button>
+    <button class="filtres-set-Btn mostrar-opcions">
+     Mostra els filtres per set
+    </button>
+    <button class="filtres-rarity-Btn mostrar-opcions">
+     Mostra els filtres per raresa
+    </button>
+    <button class="show-range-Btn mostrar-opcions">
+     Mostra el selector de cost
+    </button>
+    <button class="show-search-btn">
+     Amaga els cercadors
+    </button>
+   </div>
+   <div id="filtres">
+    <!-- Filtres per colors -->
+    <div id="color-filters">
+     <!-- <label for="color-filter-label">Filtra per color</label><br> -->
+     <button btn-color="purple" class="color-filter" data-color="Amethyst">
+      Lila
+     </button>
+     <button btn-color="green" class="color-filter" data-color="Emerald">
+      Verd
+     </button>
+     <button btn-color="red" class="color-filter" data-color="Ruby">
+      Vermell
+     </button>
+     <br/>
+     <button btn-color="grey" class="color-filter" data-color="Steel">
+      Gris
+     </button>
+     <button btn-color="orange" class="color-filter" data-color="Amber">
+      Ambar
+     </button>
+     <button btn-color="blue" class="color-filter" data-color="Sapphire">
+      Blau
+     </button>
+     <br/>
+     <button class="clear-filters-button clearBtn">
+      Esborra els filtres
+     </button>
     </div>
-    <br>
-    <br>
-    <div id="idioma">
-        <button id="toggleIdiomaEN">EN</button>
-        <button id="toggleIdiomaFR">FR</button>
+    <!-- filtres per tipus de carta -->
+    <div id="card-type">
+     <!-- <label for="type-filter-label">Filtra per tipus</label><br> -->
+     <button class="type-filter" type="Item">
+      Item
+     </button>
+     <button class="type-filter" type="Action">
+      Acció
+     </button>
+     <button class="type-filter" type="Action - Song">
+      Cançó
+     </button>
+     <br/>
+     <button class="type-filter" type="Location">
+      Ubicació
+     </button>
+     <button class="type-filter" type="Character">
+      Personatge
+     </button>
+     <br/>
+     <button class="clear-types-button clearBtn">
+      Esborra els filtres
+     </button>
     </div>
-
-    <div id="filtres-global">
-
-        <!-- Filtre per endreçar -->
-        <div id="sort-per">
-
-            <label for="sort-select">Endreça per:</label>
-            <br>
-            <select id="sort-select">
-                <option value="ink-cost">Cost de tinta</option>
-                <option value="name">Nom</option>
-                <option value="color">Color</option>
-                <option value="strength">Poder</option>
-                <option value="willpower">Vida</option>
-                <option value="lore">Lore</option>
-                <option value="card-number">Número de carta</option>
-            </select>
-
-            <!-- Invertir ordre -->
-            <button id="invert-order-button">Invertir ordre</button>
-
-            <!-- Eliminar filtres -->
-            <button id="clear-all">Eliminar filtres</button>
-
-        </div>
-        <br />
-        <div id="botonsFiltres">
-            <button class="filtres-colors-Btn mostrar-opcions">
-                Mostra els filtres per colors
-            </button>
-            <button class="filtres-tipus-Btn mostrar-opcions">
-                Mostra els filtres per tipus
-            </button>
-            <button class="filtres-set-Btn mostrar-opcions">
-                Mostra els filtres per set
-            </button>
-            <button class="filtres-rarity-Btn mostrar-opcions">
-                Mostra els filtres per raresa
-            </button>
-            <button class="show-range-Btn mostrar-opcions">
-                Mostra el selector de cost
-            </button>
-            <button class="show-search-btn">
-                Amaga els cercadors
-            </button>
-        </div>
-
-        <div id="filtres">
-
-            <!-- Filtres per colors -->
-           
-            <div id="color-filters">
-                <!-- <label for="color-filter-label">Filtra per color</label><br> -->
-                <button class="color-filter" btn-color="purple" data-color="Amethyst">Lila</button>
-                <button class="color-filter" btn-color="green" data-color="Emerald">Verd</button>
-                <button class="color-filter" btn-color="red" data-color="Ruby">Vermell</button> <br>
-                <button class="color-filter" btn-color="grey" data-color="Steel">Gris</button>
-                <button class="color-filter" btn-color="orange" data-color="Amber">Ambar</button>
-                <button class="color-filter" btn-color="blue" data-color="Sapphire">Blau</button><br>
-                <button class="clear-filters-button clearBtn">Esborra els filtres</button>
-            </div>
-
-            <!-- filtres per tipus de carta -->
-
-            <div id="card-type">
-                <!-- <label for="type-filter-label">Filtra per tipus</label><br> -->
-                <button class="type-filter" type="Item">Item</button>
-                <button class="type-filter" type="Action">Acció</button>
-                <button class="type-filter" type="Action - Song">Cançó</button><br>
-                <button class="type-filter" type="Location">Ubicació</button>
-                <button class="type-filter" type="Character">Personatge</button><br>
-                <button class="clear-types-button clearBtn">Esborra els filtres</button>
-            </div>
-
-            <!-- filtres per nom de colecció -->
-            <div id="set-name-filter">
-                <button class="set-name" set_name="The First Chapter">The First Chapter</button>
-                <button class="set-name" set_name="Rise of the Floodborn">Rise of the Floodborn</button>
-                <button class="set-name" set_name="Into the Inklands">Into the Inklands</button><br>
-                <button class="set-name" set_name="Ursula's Return">Ursula's return</button>
-                <button class="set-name" set_name="Shimmering Skies">Shimmering Skies</button>
-                <button class="set-name" set_name="Azurite Sea">Azurite Sea</button>
-                <button class="set-name" set_name="Archazia's Island">Archazia's Island</button>
-                <button class="clear-set-button clearBtn">Esborra els filtres</button>
-            </div>
-
-            <!-- filtres per raresa -->
-            <div id="rarity-filter">
-                <button class="rarity-name" rarity="Common">
-                    <img src="/resources/common.webp" alt="Common">
-                </button>
-                <button class="rarity-name" rarity="Uncommon">
-                    <img src="/resources/uncommon.webp" alt="Uncommon">
-                </button>
-                <button class="rarity-name" rarity="Rare">
-                    <img src="/resources/rare.webp" alt="Rare">
-                </button>
-                <br>
-                <button class="rarity-name" rarity="Super Rare">
-                    <img src="/resources/superare.webp" alt="Super rare">
-                </button>
-                <button class="rarity-name" rarity="Legendary">
-                    <img src="/resources/legendary.webp" alt="Legendary">
-                </button>
-                <button class="rarity-name" rarity="Enchanted">
-                    <img src="/resources/enchanted.webp" alt="Enchanted">
-                </button>
-                <button class="clear-rarity-button clearBtn">Esborra els filtres</button>
-            </div>
-
-            <!-- Rang per cost -->
-
-            <div class="rang">
-                <div class="ink-content">
-                    <div class="cost-left">
-                        <label for="range-min">Min</label>
-                        <p id="min-value">1</p>
-                    </div>
-
-                    <div>
-                        <label for="range-max">Max</label>
-                        <p id="max-value">10</p>
-                    </div>
-                </div>
-
-                <div class="range-slider">
-                    <div class="range-fill"></div>
-                    <input type="range" id="range-min" class="min-ink" value="1" min="1" max="10" step="1" />
-                    <input type="range" id="range-max" class="max-ink" value="10" min="1" max="10" step="1" />
-                </div>
-            </div>
-
-            <!-- Camp de búsqueda per Name-->
-            <div id="searchers">
-
-                <input type="text" id="search-input" placeholder="Buscar per nom...">
-                <input type="text" id="search-input-att" placeholder="Buscar per atributs...">
-                <input type="text" id="search-input-eff" placeholder="Buscar per efectes...">
-                <input type="text" id="search-input-global" placeholder="Buscar per qualsevol cosa">
-                <br />
-                <input type="text" id="search-input-illustrator" placeholder="Buscar per ilustrador">
-                <!-- <input type="text" id="search-input-number" placeholder="Número de carta"> -->
-
-                <!-- esborrar búsquedas -->
-                <!-- <br> -->
-                <!-- <button class="clear-search">Esborra búsquedes</button> -->
-            </div>
-                <br>
-            <div>
-            <!-- Dropdown per a filtres inkable -->
-                <label for="inkable-select">Tintejable?</label>
-                <select id="inkable-select">
-                    <option value="any">-</option>
-                    <option value="true">Sí</option>
-                    <option value="false">No</option>
-                </select>
-            
-            <!-- Dropdown per a filtres Enchanted -->
-                <label for="enchanted-select">Enchanted?</label>
-                <select id="enchanted-select">
-                    <option value="any">-</option>
-                    <option value="true">Sí</option>
-                    <option value="false" selected>No</option>
-                </select>
-
-            </div>
-        </div>
+    <!-- filtres per nom de colecció -->
+    <div id="set-name-filter">
+     <button class="set-name" set_name="The First Chapter">
+      The First Chapter
+     </button>
+     <button class="set-name" set_name="Rise of the Floodborn">
+      Rise of the Floodborn
+     </button>
+     <button class="set-name" set_name="Into the Inklands">
+      Into the Inklands
+     </button>
+     <br/>
+     <button class="set-name" set_name="Ursula's Return">
+      Ursula's Return
+     </button>
+     <button class="set-name" set_name="Shimmering Skies">
+      Shimmering Skies
+     </button>
+     <button class="set-name" set_name="Azurite Sea">
+      Azurite Sea
+     </button>
+     <br/>
+     <button class="set-name" set_name="Archazia's Island">
+      Archazia's Island
+     </button>
+     <button class="set-name" set_name="The Reign of Jafar">
+      The Reign of Jafar
+     </button>
+     <button class="set-name" set_name="Fabled">
+      Fabled
+     </button>
+     <br/>
+     <button class="set-name" set_name="Whispers in the Well">
+      Whispers in the Well
+     </button>
+     <button class="set-name" set_name="Winterspell">
+      Winterspell
+     </button>
+     <button class="clear-set-button clearBtn">
+      Esborra els filtres
+     </button>
     </div>
-
-    <div id="deck-container">
-        <h3 id="deck-title">El teu Deck: (0 cartes)</h3>
-        <ul id="deck-list"></ul>
-        <div id="deck-controls">
-            <div id="deck-controls-left">
-                <button id="save-deck-button">Guardar Deck</button>
-                <button id="export-deck-button">Exportar el Deck</button>
-                <textarea id="import-deck-input" placeholder="Enganxa el text del deck aquí..."></textarea>
-                <button id="import-deck-button">Importa el Deck</button>
-            </div>
-            <div id="deck-controls-right">
-                <button id="clear-deck-button">Esborra Deck</button>
-                <button id="generate-deck-pdf-button">Generar PDF del Deck</button>
-                <div id="pdf-options">
-                    <input type="checkbox" id="include-guides-checkbox"> Incloure guies per retallar
-                </div>
-            </div>
-        </div>
+    <!-- filtres per raresa -->
+    <div id="rarity-filter">
+     <button class="rarity-name" rarity="Common">
+      <img alt="Common" src="/resources/common.webp"/>
+     </button>
+     <button class="rarity-name" rarity="Uncommon">
+      <img alt="Uncommon" src="/resources/uncommon.webp"/>
+     </button>
+     <button class="rarity-name" rarity="Rare">
+      <img alt="Rare" src="/resources/rare.webp"/>
+     </button>
+     <br/>
+     <button class="rarity-name" rarity="Super Rare">
+      <img alt="Super rare" src="/resources/superare.webp"/>
+     </button>
+     <button class="rarity-name" rarity="Legendary">
+      <img alt="Legendary" src="/resources/legendary.webp"/>
+     </button>
+     <button class="rarity-name" rarity="Enchanted">
+      <img alt="Enchanted" src="/resources/enchanted.webp"/>
+     </button>
+     <button class="clear-rarity-button clearBtn">
+      Esborra els filtres
+     </button>
     </div>
-
-    <div id="placeholder">
-        <br>
-        S'estan carregant les cartes, un moment siusplau...
-        <img id="loading-placeholder" src="resources/load.gif" alt="loading">
+    <!-- Rang per cost -->
+    <div class="rang">
+     <div class="ink-content">
+      <div class="cost-left">
+       <label for="range-min">
+        Min
+       </label>
+       <p id="min-value">
+        1
+       </p>
+      </div>
+      <div>
+       <label for="range-max">
+        Max
+       </label>
+       <p id="max-value">
+        10
+       </p>
+      </div>
+     </div>
+     <div class="range-slider">
+      <div class="range-fill">
+      </div>
+      <input class="min-ink" id="range-min" max="10" min="1" step="1" type="range" value="1"/>
+      <input class="max-ink" id="range-max" max="10" min="1" step="1" type="range" value="10"/>
+     </div>
     </div>
-
-    <div class="display-cards">
-        <ul id="file-list"></ul>
+    <!-- Camp de búsqueda per Name-->
+    <div id="searchers">
+     <input id="search-input" placeholder="Buscar per nom..." type="text"/>
+     <input id="search-input-att" placeholder="Buscar per atributs..." type="text"/>
+     <input id="search-input-eff" placeholder="Buscar per efectes..." type="text"/>
+     <input id="search-input-global" placeholder="Buscar per qualsevol cosa" type="text"/>
+     <br/>
+     <input id="search-input-illustrator" placeholder="Buscar per ilustrador" type="text"/>
+     <!-- <input type="text" id="search-input-number" placeholder="Número de carta"> -->
+     <!-- esborrar búsquedas -->
+     <!-- <br> -->
+     <!-- <button class="clear-search">Esborra búsquedes</button> -->
     </div>
-
-    <button id="load-more-button">Carrega més cartes</button>
-    <button id="load-all-button">Carrega totes les cartes</button>
-<div id="notification-container"></div>
-    
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script> -->
-    <script src="resources/libs/jspdf.umd.min.js.js"></script>
-
-    <!-- <script type="module" src="scripts/proxys.js"></script> -->
-    <script type="module" src="scripts/mostrar-filtres.js"></script>
-    <script type="module" src="scripts/api.js"></script>
-    <script type="module" src="scripts/filters.js"></script>
-    <script type="module" src="scripts/sorting.js"></script>
-    <script type="module" src="scripts/search.js"></script>
-    <script type="module" src="scripts/display.js"></script>
-    <script type="module" src="scripts/eventHandlers.js"></script>
-    <script type="module" src="scripts/main.js"></script>
-    <script type="module" src="scripts/deck.js"></script>
-
-    <!-- footer -->
-    <div class="container">
-        <div id="footer">
-            © Lorcano - creat per Tomàs Bernaus Solé i David López Casafont - 2024
-        </div>
-
-        <!-- privacidad -->
-        
-        <script type="module" src="scripts/cookies.js"></script>
-        <link rel="stylesheet" href="styles/cookies.css">   
-        <div id="cookie-consent-banner">
-            <p>Fem servir cookies per a monitoritzar el lloc web</p>
-            <button id="accept-cookies">Acceptar</button>
-            <button id="decline-cookies">No acceptar</button>
-            <div id="privacidad"> <br />
-            <p><a class="privacidad" href="https://policies.google.com/technologies/partner-sites">Política de privacitat de Google</a></p><br />
-            <p><a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">Consentiment d'usuaris de L'UE</a></p><br />
-            <p><a class="privacidad" href="privacitat">Política de Privacitat</a></p>
-            </div>
-        </div>
+    <br/>
+    <div>
+     <!-- Dropdown per a filtres inkable -->
+     <label for="inkable-select">
+      Tintejable?
+     </label>
+     <select id="inkable-select">
+      <option value="any">
+       -
+      </option>
+      <option value="true">
+       Sí
+      </option>
+      <option value="false">
+       No
+      </option>
+     </select>
+     <!-- Dropdown per a filtres Enchanted -->
+     <label for="enchanted-select">
+      Enchanted?
+     </label>
+     <select id="enchanted-select">
+      <option value="any">
+       -
+      </option>
+      <option value="true">
+       Sí
+      </option>
+      <option selected="" value="false">
+       No
+      </option>
+     </select>
     </div>
-</body>
-
+   </div>
+  </div>
+  <div id="deck-container">
+   <h3 id="deck-title">
+    El teu Deck: (0 cartes)
+   </h3>
+   <ul id="deck-list">
+   </ul>
+   <div id="deck-controls">
+    <div id="deck-controls-left">
+     <button id="save-deck-button">
+      Guardar Deck
+     </button>
+     <button id="export-deck-button">
+      Exportar el Deck
+     </button>
+     <textarea id="import-deck-input" placeholder="Enganxa el text del deck aquí..."></textarea>
+     <button id="import-deck-button">
+      Importa el Deck
+     </button>
+    </div>
+    <div id="deck-controls-right">
+     <button id="clear-deck-button">
+      Esborra Deck
+     </button>
+     <button id="generate-deck-pdf-button">
+      Generar PDF del Deck
+     </button>
+     <div id="pdf-options">
+      <input id="include-guides-checkbox" type="checkbox"/>
+      Incloure guies per retallar
+     </div>
+    </div>
+   </div>
+  </div>
+  <div id="placeholder">
+   <br/>
+   S'estan carregant les cartes, un moment siusplau...
+   <img alt="loading" id="loading-placeholder" src="resources/load.gif"/>
+  </div>
+  <div class="display-cards">
+   <ul id="file-list">
+   </ul>
+  </div>
+  <button id="load-more-button">
+   Carrega més cartes
+  </button>
+  <button id="load-all-button">
+   Carrega totes les cartes
+  </button>
+  <div id="notification-container">
+  </div>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script> -->
+  <script src="resources/libs/jspdf.umd.min.js.js">
+  </script>
+  <!-- <script type="module" src="scripts/proxys.js"></script> -->
+  <script src="scripts/mostrar-filtres.js" type="module">
+  </script>
+  <script src="scripts/api.js" type="module">
+  </script>
+  <script src="scripts/filters.js" type="module">
+  </script>
+  <script src="scripts/sorting.js" type="module">
+  </script>
+  <script src="scripts/search.js" type="module">
+  </script>
+  <script src="scripts/display.js" type="module">
+  </script>
+  <script src="scripts/eventHandlers.js" type="module">
+  </script>
+  <script src="scripts/main.js" type="module">
+  </script>
+  <script src="scripts/deck.js" type="module">
+  </script>
+  <!-- footer -->
+  <div class="container">
+   <div id="footer">
+    © Lorcano - creat per Tomàs Bernaus Solé i David López Casafont - 2024
+   </div>
+   <!-- privacidad -->
+   <script src="scripts/cookies.js" type="module">
+   </script>
+   <link href="styles/cookies.css" rel="stylesheet"/>
+   <div id="cookie-consent-banner">
+    <p>
+     Fem servir cookies per a monitoritzar el lloc web
+    </p>
+    <button id="accept-cookies">
+     Acceptar
+    </button>
+    <button id="decline-cookies">
+     No acceptar
+    </button>
+    <div id="privacidad">
+     <br/>
+     <p>
+      <a class="privacidad" href="https://policies.google.com/technologies/partner-sites">
+       Política de privacitat de Google
+      </a>
+     </p>
+     <br/>
+     <p>
+      <a class="privacidad" href="https://www.google.com/about/company/user-consent-policy/">
+       Consentiment d'usuaris de L'UE
+      </a>
+     </p>
+     <br/>
+     <p>
+      <a class="privacidad" href="privacitat">
+       Política de Privacitat
+      </a>
+     </p>
+    </div>
+   </div>
+  </div>
+ </body>
 </html>
