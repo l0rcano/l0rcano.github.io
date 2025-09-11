@@ -12,5 +12,6 @@ export function getIdioma() {
 //   return `../api/api${idioma}.json`;
 // }
 export function updateApiUrl() {
+  console.log("Dumbo");
   return `https://lorcanajson.org/files/current/${idioma.toLowerCase()}/allCards.json`;
 }
