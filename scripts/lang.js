@@ -9,5 +9,5 @@ export function getIdioma() {
 }
 
 export function updateApiUrl() {
-  return `https://lorcanajson.org/files/current/en/allCards.json`;
+  return `./api/allCards.json`;
 }
