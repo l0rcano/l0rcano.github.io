@@ -1,0 +1,36 @@
+name: Update Lorcana Cards
+
+on:
+  schedule:
+    # S'executa cada dilluns a les 6:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    # Permet executar-lo manualment des de GitHub Actions
+
+jobs:
+  update-cards:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download allCards.json
+        run: |
+          mkdir -p api
+          curl -L "https://lorcanajson.org/files/current/en/allCards.json" -o api/allCards.json
+          echo "Downloaded $(wc -c < api/allCards.json) bytes"
+
+      - name: Check if file changed
+        id: diff
+        run: |
+          git diff --quiet api/allCards.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add api/allCards.json
+          git commit -m "chore: update allCards.json [$(date +'%Y-%m-%d')]"
+          git push
