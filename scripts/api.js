@@ -2,12 +2,20 @@ import { updateApiUrl } from "./lang.js";
 
 export let cardsData = [];
 
+const IMAGE_PROXY = "https://odd-haze-8ec0.tomas-projectes.workers.dev/proxy";
+
+function proxyImage(imageUrl) {
+  if (!imageUrl) return "";
+  return `${IMAGE_PROXY}?url=${encodeURIComponent(imageUrl)}`;
+}
+
 export function fetchCardsData() {
   const apiUrl = updateApiUrl();
   return fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
       cardsData = data.cards.map(card => {
+        const rawImage = card.images?.full || card.images?.thumbnail || "";
         return {
           Artist:          card.artistsText || "",
           Set_Name:        data.sets[card.setCode]?.name || "",
@@ -18,7 +26,7 @@ export function fetchCardsData() {
           Color:           card.color || "",
           Gamemode:        "Lorcana",
           Franchise:       card.story || "",
-          Image:           card.images?.full || card.images?.thumbnail || "",
+          Image:           proxyImage(rawImage),
           Cost:            card.cost ?? 0,
           Inkable:         card.inkwell ?? false,
           Name:            card.fullName || card.name || "",
