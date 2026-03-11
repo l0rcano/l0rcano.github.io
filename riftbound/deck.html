@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Build and export Riftbound decks — proxy PDF generator" />
   <title>Riftbound — Deck Builder</title>
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/deck.css" />
@@ -11,20 +10,17 @@
 </head>
 <body>
 
-  <!-- Top Navigation -->
   <nav id="top-nav">
     <span class="logo">Riftbound <span>/ Deck Builder</span></span>
     <div class="nav-links">
-      <a href="index.html">← Browser</a>
+      <a href="/riftbound/">← Browser</a>
     </div>
   </nav>
 
   <div id="deck-layout">
 
-    <!-- ── Browse Panel (sidebar + cards) ── -->
+    <!-- ── LEFT: Browse Panel ── -->
     <div id="browse-panel">
-
-      <!-- Sidebar -->
       <aside id="sidebar">
 
         <div style="margin-bottom:14px;">
@@ -102,9 +98,12 @@
 
       <!-- Card Grid -->
       <main id="main-content">
-        <div id="sort-bar">
-          <span style="font-size:12px;color:var(--text-dim);">Click a card to add it to your deck</span>
-          <span id="results-count"></span>
+        <!-- Add target toggle -->
+        <div id="deck-target-bar">
+          <span style="font-size:12px;color:var(--text-dim);">Adding to:</span>
+          <button id="target-main" class="target-btn active">Main Deck</button>
+          <button id="target-side" class="target-btn">Sidedeck</button>
+          <span id="results-count" style="margin-left:auto;font-size:12px;color:var(--text-dim);"></span>
         </div>
 
         <div id="placeholder">
@@ -121,44 +120,83 @@
       </main>
     </div>
 
-    <!-- ── Deck Panel (right) ── -->
+    <!-- ── RIGHT: Deck Panel ── -->
     <div id="deck-panel">
+
+      <!-- Deck name + counters -->
       <div id="deck-header">
-        <h3 id="deck-title" class="deck-title">Your Deck (0/40)</h3>
-        <div style="font-size:11px;color:var(--text-dim);">Max 3 copies per card · 40 cards total</div>
+        <input id="deck-name-input" type="text" placeholder="Deck name…" maxlength="40" />
+        <div id="deck-counters">
+          <span class="counter-chip" id="counter-main">Main <b>0</b>/40</span>
+          <span class="counter-chip" id="counter-runes">Runes <b>0</b>/12</span>
+          <span class="counter-chip" id="counter-side">Side <b>0</b>/8</span>
+        </div>
+        <div id="deck-hints"></div>
       </div>
 
-      <ul id="deck-list"></ul>
+      <!-- Scrollable deck content -->
+      <div id="deck-scroll">
 
+        <!-- Visual card showcase (legend + champion) -->
+        <div id="deck-showcase">
+          <div class="showcase-slot" id="showcase-legend" data-label="Legend">
+            <div class="showcase-empty">＋ Legend</div>
+          </div>
+          <div class="showcase-slot" id="showcase-champion" data-label="Champion">
+            <div class="showcase-empty">＋ Champion</div>
+          </div>
+        </div>
+
+        <!-- Battlefields row -->
+        <div class="deck-section-header">
+          <span>Battlefields</span><span class="section-count" id="bf-count">0/3</span>
+        </div>
+        <div id="battlefield-row" class="card-thumb-row"></div>
+
+        <!-- Runes row -->
+        <div class="deck-section-header">
+          <span>Runes</span><span class="section-count" id="rune-count">0/12</span>
+        </div>
+        <div id="rune-row" class="card-thumb-row"></div>
+
+        <!-- Main deck list -->
+        <div class="deck-section-header">
+          <span>Main Deck</span><span class="section-count" id="main-count">0/40</span>
+        </div>
+        <ul id="main-deck-list" class="deck-card-list"></ul>
+
+        <!-- Sidedeck list -->
+        <div class="deck-section-header">
+          <span>Sidedeck</span><span class="section-count" id="side-count">0/8</span>
+        </div>
+        <ul id="side-deck-list" class="deck-card-list"></ul>
+
+      </div><!-- /deck-scroll -->
+
+      <!-- Footer controls -->
       <div id="deck-controls">
-
         <div class="deck-btn-row">
           <button id="save-deck-button" class="btn-gold">Save</button>
           <button id="export-deck-button" class="btn-gold">Export</button>
           <button id="clear-deck-button" class="btn-danger">Clear</button>
         </div>
-
-        <textarea id="import-deck-input" placeholder="Paste deck list here (e.g. 3 Jinx · 2 Card Name)…"></textarea>
+        <textarea id="import-deck-input" placeholder="Paste decklist (e.g. 3 Jinx)…"></textarea>
         <button id="import-deck-button" class="btn-gold" style="width:100%;">Import deck</button>
-
-        <hr style="border-color:var(--border);margin:4px 0;" />
-
+        <hr style="border-color:var(--border);margin:2px 0;" />
         <button id="generate-deck-pdf-button" class="btn-gold" style="width:100%;">Generate PDF</button>
         <div id="pdf-options">
           <input type="checkbox" id="include-guides-checkbox" />
           <label for="include-guides-checkbox">Include cut guides</label>
         </div>
-
       </div>
-    </div>
 
-  </div>
+    </div><!-- /deck-panel -->
+
+  </div><!-- /deck-layout -->
 
   <div id="notification-container"></div>
 
-  <!-- jsPDF for proxy printing -->
-  <script src="resources/libs/jspdf.umd.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script type="module" src="scripts/api.js"></script>
   <script type="module" src="scripts/display.js"></script>
   <script type="module" src="scripts/search.js"></script>
@@ -168,6 +206,5 @@
   <script type="module" src="scripts/eventHandlers.js"></script>
   <script type="module" src="scripts/pdfProxy.js"></script>
   <script type="module" src="scripts/deck.js"></script>
-
 </body>
 </html>

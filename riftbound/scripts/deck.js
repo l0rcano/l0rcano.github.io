@@ -1,191 +1,444 @@
 import { cardsData, fetchCardsData } from './api.js';
 import { buildDynamicFilters } from './filterBuilder.js';
 import { filterAndDisplayCards } from './filters.js';
+import { setupEventHandlers } from './eventHandlers.js';
 import { generateDeckPdf } from './pdfProxy.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const deckList    = document.getElementById('deck-list');
-  const deckTitle   = document.getElementById('deck-title');
-  const notifBox    = document.getElementById('notification-container');
-  const MAX_COPIES  = 3;
-  const DECK_SIZE   = 40;
-  let deck = [];
+// ── Deck state ────────────────────────────────────────────────────
+// Fixed slots (1 each)
+let legend      = null;
+let champion    = null;
+// Fixed rows (up to 3 / 12)
+let battlefields = [];  // max 3
+let runes        = [];  // max 12 (3 copies each)
+// Variable lists (max 3 copies each)
+let mainDeck = [];
+let sideDeck = [];
 
-  // Load deck from localStorage
-  function loadDeck() {
-    try {
-      const saved = localStorage.getItem('riftboundDeck');
-      if (saved) { deck = JSON.parse(saved); renderDeck(); }
-    } catch(e) { deck = []; }
+const MAIN_MAX  = 40;
+const SIDE_MAX  = 8;
+const BF_MAX    = 3;
+const RUNE_MAX  = 12;
+const MAX_COPIES = 3;
+
+// Where new cards go: 'main' or 'side'
+let addTarget = 'main';
+
+// ── Computed ──────────────────────────────────────────────────────
+function mainTotal()  { return mainDeck.reduce((a,c) => a + c.copies, 0); }
+function sideTotal()  { return sideDeck.reduce((a,c) => a + c.copies, 0); }
+function runeTotal()  { return runes.reduce((a,c) => a + c.copies, 0); }
+
+// ── Notifications ─────────────────────────────────────────────────
+function notify(msg) {
+  const box = document.getElementById('notification-container');
+  const div = document.createElement('div');
+  div.className = 'notification';
+  div.innerHTML = msg;
+  const x = document.createElement('span');
+  x.className = 'notif-close'; x.textContent = '×';
+  x.addEventListener('click', () => div.remove());
+  div.appendChild(x);
+  box.appendChild(div);
+  setTimeout(() => div.classList.add('show'), 50);
+  setTimeout(() => { div.classList.remove('show'); setTimeout(() => div.remove(), 300); }, 4000);
+}
+
+// ── Add card ──────────────────────────────────────────────────────
+function addCard(name, image, type) {
+  const t = (type || '').trim();
+
+  // Legend
+  if (t === 'Legend') {
+    if (legend) { notify(`Legend slot taken by <strong>${legend.Name}</strong>.`); return; }
+    legend = { Name: name, Image: image, Type: t };
+    renderDeck(); return;
   }
 
-  function saveDeck() {
-    localStorage.setItem('riftboundDeck', JSON.stringify(deck));
-    showNotification('Deck saved ✓');
+  // Champion Unit
+  if (t === 'Champion Unit') {
+    if (champion) { notify(`Champion slot taken by <strong>${champion.Name}</strong>.`); return; }
+    champion = { Name: name, Image: image, Type: t };
+    renderDeck(); return;
   }
 
-  function clearDeck() {
-    deck = [];
-    renderDeck();
-    localStorage.removeItem('riftboundDeck');
+  // Battlefield
+  if (t === 'Battlefield') {
+    if (battlefields.length >= BF_MAX) { notify('Maximum 3 Battlefields.'); return; }
+    if (battlefields.find(b => b.Name === name)) { notify(`<strong>${name}</strong> already in Battlefields.`); return; }
+    battlefields.push({ Name: name, Image: image, Type: t });
+    renderDeck(); return;
   }
 
-  function totalCards() { return deck.reduce((a, c) => a + c.copies, 0); }
-
-  function renderDeck() {
-    deckList.innerHTML = '';
-    const total = totalCards();
-    deckTitle.textContent = `Your Deck (${total}/${DECK_SIZE})`;
-    deckTitle.className = total === DECK_SIZE ? 'deck-title full' : 'deck-title';
-
-    deck.forEach((card, i) => {
-      const li = document.createElement('li');
-      li.className = 'deck-card';
-
-      // Stacked images
-      const stack = document.createElement('div');
-      stack.className = 'deck-card-stack';
-      for (let j = 0; j < card.copies; j++) {
-        const img = document.createElement('img');
-        img.src = card.Image;
-        img.alt = card.Name;
-        img.style.cssText = `left:${j*8}px;top:${j*8}px`;
-        stack.appendChild(img);
-      }
-
-      const info = document.createElement('div');
-      info.className = 'deck-card-info';
-
-      const nameEl = document.createElement('p');
-      nameEl.className = 'deck-card-name';
-      nameEl.textContent = `${card.Name}`;
-
-      const copyEl = document.createElement('p');
-      copyEl.className = 'deck-card-copies';
-      copyEl.textContent = `×${card.copies}`;
-
-      const controls = document.createElement('div');
-      controls.className = 'deck-card-controls';
-
-      const addBtn = document.createElement('button');
-      addBtn.textContent = '+';
-      addBtn.className = 'copy-btn';
-      addBtn.addEventListener('click', () => {
-        if (card.copies >= MAX_COPIES) {
-          showNotification(`Max ${MAX_COPIES} copies per card.`);
-          return;
-        }
-        if (totalCards() >= DECK_SIZE) {
-          showNotification(`Deck is full (${DECK_SIZE} cards).`);
-          return;
-        }
-        card.copies++;
-        renderDeck();
-      });
-
-      const rmBtn = document.createElement('button');
-      rmBtn.textContent = '−';
-      rmBtn.className = 'copy-btn remove';
-      rmBtn.addEventListener('click', () => {
-        if (card.copies > 1) { card.copies--; }
-        else { deck.splice(i, 1); }
-        renderDeck();
-      });
-
-      controls.appendChild(rmBtn);
-      controls.appendChild(addBtn);
-      info.appendChild(nameEl);
-      info.appendChild(copyEl);
-      info.appendChild(controls);
-      li.appendChild(stack);
-      li.appendChild(info);
-      deckList.appendChild(li);
-    });
-  }
-
-  function addCardToDeck(name, image) {
-    const existing = deck.find(c => c.Name === name);
-    if (existing) {
-      if (existing.copies >= MAX_COPIES) {
-        showNotification(`Max ${MAX_COPIES} copies of "${name}".`);
-        return;
-      }
-      if (totalCards() >= DECK_SIZE) {
-        showNotification(`Deck is full (${DECK_SIZE} cards).`);
-        return;
-      }
-      existing.copies++;
+  // Rune — goes to its own pool regardless of addTarget
+  if (t === 'Rune') {
+    if (runeTotal() >= RUNE_MAX) { notify('Maximum 12 Runes.'); return; }
+    const ex = runes.find(c => c.Name === name);
+    if (ex) {
+      if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies of <strong>${name}</strong>.`); return; }
+      ex.copies++;
     } else {
-      if (totalCards() >= DECK_SIZE) {
-        showNotification(`Deck is full (${DECK_SIZE} cards).`);
-        return;
-      }
-      deck.push({ Name: name, Image: image, copies: 1 });
+      runes.push({ Name: name, Image: image, Type: t, copies: 1 });
     }
-    renderDeck();
+    renderDeck(); return;
   }
 
-  // Click on card in browse list adds to deck
+  // Main or side depending on toggle
+  if (addTarget === 'side') {
+    if (sideTotal() >= SIDE_MAX) { notify(`Sidedeck full (${SIDE_MAX} cards).`); return; }
+    const ex = sideDeck.find(c => c.Name === name);
+    if (ex) {
+      if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
+      ex.copies++;
+    } else {
+      sideDeck.push({ Name: name, Image: image, Type: t, copies: 1 });
+    }
+  } else {
+    if (mainTotal() >= MAIN_MAX) { notify(`Main deck full (${MAIN_MAX} cards).`); return; }
+    const ex = mainDeck.find(c => c.Name === name);
+    if (ex) {
+      if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
+      ex.copies++;
+    } else {
+      mainDeck.push({ Name: name, Image: image, Type: t, copies: 1 });
+    }
+  }
+  renderDeck();
+}
+
+// ── Render ────────────────────────────────────────────────────────
+function renderDeck() {
+  const mt = mainTotal(), st = sideTotal(), rt = runeTotal();
+
+  // Counters
+  setChip('counter-main',  mt,  MAIN_MAX,  mt === MAIN_MAX);
+  setChip('counter-runes', rt,  RUNE_MAX,  false);
+  setChip('counter-side',  st,  SIDE_MAX,  false);
+
+  // Section counts
+  setText('bf-count',   `${battlefields.length}/3`);
+  setText('rune-count', `${rt}/12`);
+  setText('main-count', `${mt}/40`);
+  setText('side-count', `${st}/8`);
+
+  // Hints
+  const hints = [];
+  if (!legend)              hints.push('⚠ Missing Legend');
+  if (!champion)            hints.push('⚠ Missing Champion Unit');
+  if (battlefields.length < 3) hints.push(`⚠ Need ${3 - battlefields.length} more Battlefield(s)`);
+  document.getElementById('deck-hints').innerHTML = hints.join(' &nbsp;·&nbsp; ');
+
+  // Showcase (large cards)
+  renderShowcase('showcase-legend',   legend,   'Legend');
+  renderShowcase('showcase-champion', champion, 'Champion');
+
+  // Thumb rows
+  renderThumbRow('battlefield-row', battlefields, 'battlefield');
+  renderThumbRow('rune-row',         runes,        'rune');
+
+  // Card lists
+  renderCardList('main-deck-list', mainDeck, 'main');
+  renderCardList('side-deck-list', sideDeck, 'side');
+
+  saveDeckAuto();
+}
+
+function setChip(id, val, max, full) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelector('b').textContent = val;
+  el.className = 'counter-chip' + (full ? ' full' : '');
+}
+function setText(id, txt) {
+  const el = document.getElementById(id); if (el) el.textContent = txt;
+}
+
+function renderShowcase(slotId, card, label) {
+  const slot = document.getElementById(slotId);
+  if (!slot) return;
+  slot.innerHTML = '';
+  if (!card) {
+    slot.innerHTML = `<div class="showcase-empty">＋ ${label}</div>`;
+    return;
+  }
+  const img = document.createElement('img');
+  img.src = card.Image; img.alt = card.Name;
+  img.className = 'showcase-img';
+
+  const caption = document.createElement('div');
+  caption.className = 'showcase-caption';
+  caption.textContent = card.Name;
+
+  const rm = document.createElement('button');
+  rm.className = 'showcase-remove'; rm.textContent = '×';
+  rm.addEventListener('click', () => {
+    if (slotId === 'showcase-legend') legend = null;
+    else champion = null;
+    renderDeck();
+  });
+
+  slot.appendChild(img);
+  slot.appendChild(caption);
+  slot.appendChild(rm);
+}
+
+function renderThumbRow(containerId, cards, zone) {
+  const row = document.getElementById(containerId);
+  if (!row) return;
+  row.innerHTML = '';
+
+  if (!cards.length) {
+    row.innerHTML = `<span class="thumb-empty">${zone === 'battlefield' ? 'No battlefields added' : 'No runes added'}</span>`;
+    return;
+  }
+
+  cards.forEach((card, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-thumb-wrap';
+
+    const stack = document.createElement('div');
+    stack.className = 'card-thumb-stack';
+    const copies = card.copies || 1;
+    for (let j = 0; j < Math.min(copies, 3); j++) {
+      const img = document.createElement('img');
+      img.src = card.Image; img.alt = card.Name;
+      img.style.cssText = `left:${j*4}px;top:${j*4}px`;
+      stack.appendChild(img);
+    }
+
+    const name = document.createElement('span');
+    name.className = 'thumb-name';
+    name.textContent = card.Name;
+
+    const controls = document.createElement('div');
+    controls.className = 'thumb-controls';
+
+    const rm = document.createElement('button');
+    rm.className = 'thumb-btn remove'; rm.textContent = '−';
+    rm.addEventListener('click', () => {
+      if (zone === 'battlefield') {
+        battlefields.splice(i, 1);
+      } else {
+        if (card.copies > 1) card.copies--;
+        else runes.splice(i, 1);
+      }
+      renderDeck();
+    });
+
+    if (zone === 'rune') {
+      const add = document.createElement('button');
+      add.className = 'thumb-btn'; add.textContent = '+';
+      add.addEventListener('click', () => {
+        if (card.copies >= MAX_COPIES) { notify('Max 3 copies.'); return; }
+        if (runeTotal() >= RUNE_MAX)   { notify('Max 12 runes.'); return; }
+        card.copies++; renderDeck();
+      });
+      const copyLabel = document.createElement('span');
+      copyLabel.className = 'thumb-copies'; copyLabel.textContent = `×${card.copies}`;
+      controls.append(rm, copyLabel, add);
+    } else {
+      controls.appendChild(rm);
+    }
+
+    wrap.appendChild(stack);
+    wrap.appendChild(name);
+    wrap.appendChild(controls);
+    row.appendChild(wrap);
+  });
+}
+
+function renderCardList(ulId, cards, zone) {
+  const ul = document.getElementById(ulId);
+  if (!ul) return;
+  ul.innerHTML = '';
+
+  if (!cards.length) {
+    ul.innerHTML = `<li class="deck-list-empty">${zone === 'main' ? 'No cards yet — click a card to add' : 'Empty sidedeck'}</li>`;
+    return;
+  }
+
+  cards.forEach((card, i) => {
+    const li = document.createElement('li');
+    li.className = 'deck-list-item';
+
+    const thumb = document.createElement('img');
+    thumb.src = card.Image; thumb.alt = card.Name;
+    thumb.className = 'deck-list-thumb';
+
+    const info = document.createElement('div');
+    info.className = 'deck-list-info';
+    info.innerHTML = `<span class="deck-list-name">${card.Name}</span><span class="deck-list-type">${card.Type}</span>`;
+
+    const ctrl = document.createElement('div');
+    ctrl.className = 'deck-list-ctrl';
+
+    const rm = document.createElement('button');
+    rm.className = 'copy-btn remove'; rm.textContent = '−';
+    rm.addEventListener('click', () => {
+      if (card.copies > 1) card.copies--;
+      else {
+        if (zone === 'main') mainDeck.splice(i, 1);
+        else sideDeck.splice(i, 1);
+      }
+      renderDeck();
+    });
+
+    const copies = document.createElement('span');
+    copies.className = 'deck-list-copies'; copies.textContent = `×${card.copies}`;
+
+    const add = document.createElement('button');
+    add.className = 'copy-btn'; add.textContent = '+';
+    add.addEventListener('click', () => {
+      if (card.copies >= MAX_COPIES) { notify('Max 3 copies.'); return; }
+      if (zone === 'main' && mainTotal() >= MAIN_MAX) { notify('Main deck full.'); return; }
+      if (zone === 'side' && sideTotal() >= SIDE_MAX) { notify('Sidedeck full.'); return; }
+      card.copies++; renderDeck();
+    });
+
+    ctrl.append(rm, copies, add);
+    li.append(thumb, info, ctrl);
+    ul.appendChild(li);
+  });
+}
+
+// ── Persist ───────────────────────────────────────────────────────
+function saveDeckAuto() {
+  try {
+    localStorage.setItem('riftboundDeck', JSON.stringify(
+      { legend, champion, battlefields, runes, mainDeck, sideDeck }
+    ));
+  } catch(e) {}
+}
+
+function loadDeck() {
+  try {
+    const s = localStorage.getItem('riftboundDeck');
+    if (!s) return;
+    const d = JSON.parse(s);
+    legend       = d.legend       || null;
+    champion     = d.champion     || null;
+    battlefields = d.battlefields || [];
+    runes        = d.runes        || [];
+    mainDeck     = d.mainDeck     || [];
+    sideDeck     = d.sideDeck     || [];
+    renderDeck();
+  } catch(e) {}
+}
+
+function clearDeck() {
+  legend = null; champion = null;
+  battlefields = []; runes = [];
+  mainDeck = []; sideDeck = [];
+  localStorage.removeItem('riftboundDeck');
+  renderDeck();
+}
+
+// ── Export / Import ───────────────────────────────────────────────
+function exportDeck() {
+  const lines = [];
+  const dn = document.getElementById('deck-name-input')?.value?.trim();
+  if (dn) lines.push(`// ${dn}`, '');
+  if (legend)   lines.push(`1 ${legend.Name}`);
+  if (champion) lines.push(`1 ${champion.Name}`);
+  battlefields.forEach(b => lines.push(`1 ${b.Name}`));
+  mainDeck.forEach(c => lines.push(`${c.copies} ${c.Name}`));
+  if (runes.length) {
+    lines.push('', '// Runes');
+    runes.forEach(c => lines.push(`${c.copies} ${c.Name}`));
+  }
+  if (sideDeck.length) {
+    lines.push('', '// Sidedeck');
+    sideDeck.forEach(c => lines.push(`${c.copies} ${c.Name}`));
+  }
+  navigator.clipboard.writeText(lines.join('\n'))
+    .then(() => notify('Deck copied to clipboard ✓'))
+    .catch(() => notify('Could not copy to clipboard.'));
+}
+
+function importDeck() {
+  const text = document.getElementById('import-deck-input')?.value?.trim();
+  if (!text) return;
+  clearDeck();
+  let zone = 'main';
+  text.split('\n').forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    if (line.startsWith('//')) {
+      const l = line.toLowerCase();
+      if (l.includes('side')) zone = 'side';
+      else if (l.includes('rune')) zone = 'rune';
+      return;
+    }
+    const m = line.match(/^(\d+)\s+(.+)$/);
+    if (!m) return;
+    const copies = Math.min(parseInt(m[1]), MAX_COPIES);
+    const name   = m[2].trim();
+    const card   = cardsData.find(c => c.Name.toLowerCase() === name.toLowerCase());
+    if (!card) { notify(`Not found: <strong>${name}</strong>`); return; }
+    const prevTarget = addTarget;
+    if (zone === 'side') addTarget = 'side'; else addTarget = 'main';
+    for (let i = 0; i < copies; i++) addCard(card.Name, card.Image, card.Type);
+    addTarget = prevTarget;
+  });
+}
+
+// ── Click handler on card grid ────────────────────────────────────
+function setupCardClick() {
   document.getElementById('file-list')?.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
     const name  = img.getAttribute('data-card-name');
+    const type  = img.getAttribute('data-card-type');
     const image = img.src || img.getAttribute('data-src');
-    if (name) addCardToDeck(name, image);
+    if (name) addCard(name, image, type);
   });
+}
 
-  // Export deck as text
-  document.getElementById('export-deck-button')?.addEventListener('click', () => {
-    const text = deck.map(c => `${c.copies} ${c.Name}`).join('\n');
-    navigator.clipboard.writeText(text)
-      .then(() => showNotification('Deck copied to clipboard ✓'))
-      .catch(() => showNotification('Could not copy to clipboard.'));
+// ── Target toggle ─────────────────────────────────────────────────
+function setupTargetToggle() {
+  document.getElementById('target-main')?.addEventListener('click', () => {
+    addTarget = 'main';
+    document.getElementById('target-main').classList.add('active');
+    document.getElementById('target-side').classList.remove('active');
   });
-
-  // Import deck from textarea
-  document.getElementById('import-deck-button')?.addEventListener('click', () => {
-    const text = document.getElementById('import-deck-input')?.value?.trim();
-    if (!text) return;
-    deck = [];
-    text.split('\n').forEach(line => {
-      const match = line.match(/^(\d+)\s+(.+)$/);
-      if (!match) return;
-      const copies = Math.min(parseInt(match[1]), MAX_COPIES);
-      const name   = match[2].trim();
-      const cardData = cardsData.find(c => c.Name.toLowerCase() === name.toLowerCase());
-      if (cardData) {
-        deck.push({ Name: cardData.Name, Image: cardData.Image, copies });
-      } else {
-        showNotification(`Card not found: <strong>${name}</strong>`);
-      }
-    });
-    renderDeck();
+  document.getElementById('target-side')?.addEventListener('click', () => {
+    addTarget = 'side';
+    document.getElementById('target-side').classList.add('active');
+    document.getElementById('target-main').classList.remove('active');
   });
+}
 
-  document.getElementById('save-deck-button')?.addEventListener('click', saveDeck);
+// ── PDF ───────────────────────────────────────────────────────────
+function buildPdfCards() {
+  const all = [];
+  if (legend)   all.push({ ...legend,   copies: 1 });
+  if (champion) all.push({ ...champion, copies: 1 });
+  battlefields.forEach(b => all.push({ ...b, copies: 1 }));
+  runes.forEach(c => all.push(c));
+  mainDeck.forEach(c => all.push(c));
+  return all;
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  setupEventHandlers();
+  setupCardClick();
+  setupTargetToggle();
+
+  document.getElementById('save-deck-button')?.addEventListener('click', () => { saveDeckAuto(); notify('Deck saved ✓'); });
   document.getElementById('clear-deck-button')?.addEventListener('click', clearDeck);
+  document.getElementById('export-deck-button')?.addEventListener('click', exportDeck);
+  document.getElementById('import-deck-button')?.addEventListener('click', importDeck);
   document.getElementById('generate-deck-pdf-button')?.addEventListener('click', () => {
-    generateDeckPdf(deck, notifBox);
+    generateDeckPdf(buildPdfCards(), document.getElementById('notification-container'));
   });
 
-  function showNotification(msg) {
-    const div = document.createElement('div');
-    div.className = 'notification';
-    div.innerHTML = msg;
-    const x = document.createElement('span');
-    x.className = 'notif-close';
-    x.textContent = '×';
-    x.addEventListener('click', () => div.remove());
-    div.appendChild(x);
-    notifBox.appendChild(div);
-    setTimeout(() => div.classList.add('show'), 50);
-    setTimeout(() => { div.classList.remove('show'); setTimeout(() => div.remove(), 300); }, 5000);
-  }
-
-  // Init
-  fetchCardsData().then(() => {
-    buildDynamicFilters();
-    filterAndDisplayCards();
-    loadDeck();
-  });
+  fetchCardsData()
+    .then(() => {
+      buildDynamicFilters();
+      filterAndDisplayCards();
+      document.getElementById('placeholder')?.remove();
+      loadDeck();
+      renderDeck();
+    });
 });
