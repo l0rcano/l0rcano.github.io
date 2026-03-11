@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Build and export Riftbound decks — proxy PDF generator" />
+  <title>Riftbound — Deck Builder</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/deck.css" />
+  <link rel="icon" type="image/png" href="resources/favicon.png" />
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav id="top-nav">
+    <span class="logo">Riftbound <span>/ Deck Builder</span></span>
+    <div class="nav-links">
+      <a href="index.html">← Browser</a>
+    </div>
+  </nav>
+
+  <div id="deck-layout">
+
+    <!-- ── Browse Panel (sidebar + cards) ── -->
+    <div id="browse-panel">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+
+        <div style="margin-bottom:14px;">
+          <div id="sort-bar" style="flex-direction:column;align-items:flex-start;gap:6px;border:none;padding:0;margin:0;">
+            <label for="sort-select" style="font-family:var(--font-display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);">Sort by</label>
+            <select id="sort-select" style="width:100%;">
+              <option value="name">Name</option>
+              <option value="energy">Energy cost</option>
+              <option value="type">Type</option>
+              <option value="rarity">Rarity</option>
+              <option value="set">Set number</option>
+            </select>
+            <div style="display:flex;gap:6px;width:100%;">
+              <button id="invert-order-button" style="flex:1;font-size:12px;">Invert</button>
+              <button id="clear-all" class="btn-danger" style="flex:1;font-size:12px;">Reset all</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="search-body" aria-expanded="true">Search</button>
+          <div class="filter-section-body open" id="search-body" style="flex-direction:column;gap:6px;">
+            <div class="search-group"><input type="text" id="search-name" placeholder="Search by name…" /></div>
+            <div class="search-group"><input type="text" id="search-text" placeholder="Search card text…" /></div>
+            <div class="search-group"><input type="text" id="search-global" placeholder="Search everything…" /></div>
+            <div class="search-group"><input type="text" id="search-artist" placeholder="Search by artist…" /></div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="domain-body" aria-expanded="false">Domain</button>
+          <div class="filter-section-body" id="domain-body">
+            <div id="domain-filters" style="display:flex;flex-wrap:wrap;gap:6px;width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="type-body" aria-expanded="false">Card Type</button>
+          <div class="filter-section-body" id="type-body">
+            <div id="type-filters" style="display:flex;flex-wrap:wrap;gap:6px;width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="set-body" aria-expanded="false">Set</button>
+          <div class="filter-section-body" id="set-body">
+            <div id="set-filters" style="display:flex;flex-wrap:wrap;gap:6px;width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="rarity-body" aria-expanded="false">Rarity</button>
+          <div class="filter-section-body" id="rarity-body">
+            <div id="rarity-filters" style="display:flex;flex-wrap:wrap;gap:6px;width:100%;"></div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-section-toggle" data-target="energy-body" aria-expanded="false">Energy Cost</button>
+          <div class="filter-section-body" id="energy-body" style="flex-direction:column;">
+            <div class="energy-range">
+              <div class="energy-display">
+                <span>Min: <span id="min-value">0</span></span>
+                <span>Max: <span id="max-value">10</span></span>
+              </div>
+              <div class="range-track">
+                <input class="min-energy" type="range" min="0" max="10" step="1" value="0" />
+                <input class="max-energy" type="range" min="0" max="10" step="1" value="10" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Card Grid -->
+      <main id="main-content">
+        <div id="sort-bar">
+          <span style="font-size:12px;color:var(--text-dim);">Click a card to add it to your deck</span>
+          <span id="results-count"></span>
+        </div>
+
+        <div id="placeholder">
+          <div class="spinner"></div>
+          <p>Loading cards…</p>
+        </div>
+
+        <ul id="file-list"></ul>
+
+        <div class="load-buttons">
+          <button id="load-more-button" class="btn-gold">Load 20 more</button>
+          <button id="load-all-button" class="btn-gold">Load all</button>
+        </div>
+      </main>
+    </div>
+
+    <!-- ── Deck Panel (right) ── -->
+    <div id="deck-panel">
+      <div id="deck-header">
+        <h3 id="deck-title" class="deck-title">Your Deck (0/40)</h3>
+        <div style="font-size:11px;color:var(--text-dim);">Max 3 copies per card · 40 cards total</div>
+      </div>
+
+      <ul id="deck-list"></ul>
+
+      <div id="deck-controls">
+
+        <div class="deck-btn-row">
+          <button id="save-deck-button" class="btn-gold">Save</button>
+          <button id="export-deck-button" class="btn-gold">Export</button>
+          <button id="clear-deck-button" class="btn-danger">Clear</button>
+        </div>
+
+        <textarea id="import-deck-input" placeholder="Paste deck list here (e.g. 3 Jinx · 2 Card Name)…"></textarea>
+        <button id="import-deck-button" class="btn-gold" style="width:100%;">Import deck</button>
+
+        <hr style="border-color:var(--border);margin:4px 0;" />
+
+        <button id="generate-deck-pdf-button" class="btn-gold" style="width:100%;">Generate PDF</button>
+        <div id="pdf-options">
+          <input type="checkbox" id="include-guides-checkbox" />
+          <label for="include-guides-checkbox">Include cut guides</label>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="notification-container"></div>
+
+  <!-- jsPDF for proxy printing -->
+  <script src="resources/libs/jspdf.umd.min.js"></script>
+
+  <script type="module" src="scripts/api.js"></script>
+  <script type="module" src="scripts/display.js"></script>
+  <script type="module" src="scripts/search.js"></script>
+  <script type="module" src="scripts/sorting.js"></script>
+  <script type="module" src="scripts/filters.js"></script>
+  <script type="module" src="scripts/filterBuilder.js"></script>
+  <script type="module" src="scripts/eventHandlers.js"></script>
+  <script type="module" src="scripts/pdfProxy.js"></script>
+  <script type="module" src="scripts/deck.js"></script>
+
+</body>
+</html>
