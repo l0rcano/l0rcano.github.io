@@ -1,6 +1,7 @@
-import { fetchCardsData, cardsData } from "./api.js";
+import { fetchCardsData } from "./api.js";
 import { filterAndDisplayCards } from "./filters.js";
 import { setupEventHandlers } from "./eventHandlers.js";
+import { buildDynamicFilters } from "./filterBuilder.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   initApp();
@@ -9,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function initApp() {
   fetchCardsData()
     .then(() => {
+      buildDynamicFilters();  
       filterAndDisplayCards();
       hidePlaceholder();
     })
@@ -19,5 +21,5 @@ function initApp() {
 
 function hidePlaceholder() {
   const placeholderElement = document.getElementById("placeholder");
-  placeholderElement.style.display = "none";
+  if (placeholderElement) placeholderElement.style.display = "none";
 }

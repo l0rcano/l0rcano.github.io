@@ -3,11 +3,10 @@ import { sortAndDisplayCards } from "./sorting.js";
 import { applySearchFilters } from "./search.js";
 import { cardsData } from "./api.js";
 
-const colorFilters = document.querySelectorAll(".color-filter");
-const typeFilters = document.querySelectorAll(".type-filter");
-const setNameFilters = document.querySelectorAll(".set-name");
-const rarityNameFilters = document.querySelectorAll(".rarity-name");
-const inkableSelect = document.getElementById("inkable-select");
+// Les queries es fan lazy (dins cada funció) perquè els botons es generen
+// dinàmicament per filterBuilder.js després de carregar la API.
+
+const inkableSelect  = document.getElementById("inkable-select");
 const enchantedSelect = document.getElementById("enchanted-select");
 
 export function filterAndDisplayCards() {
@@ -27,12 +26,10 @@ export function filterAndDisplayCards() {
 }
 
 function applyColorFilter(cards) {
-  const activeColors = Array.from(colorFilters)
-    .filter((filter) => filter.classList.contains("active"))
-    .map((filter) => filter.getAttribute("data-color"));
-
+  const activeColors = Array.from(document.querySelectorAll(".color-filter.active"))
+    .map(f => f.getAttribute("data-color"));
   if (activeColors.length > 0) {
-    return cards.filter((card) => activeColors.includes(card.Color));
+    return cards.filter(card => activeColors.includes(card.Color));
   }
   return cards;
 }
@@ -41,65 +38,61 @@ function applyInkableFilter(cards) {
   const inkableValue = inkableSelect.value;
   if (inkableValue !== "any") {
     const inkableBoolean = inkableValue === "true";
-    return cards.filter((card) => card.Inkable === inkableBoolean);
+    return cards.filter(card => card.Inkable === inkableBoolean);
   }
   return cards;
 }
+
 function applyEnchantedFilter(cards) {
   const enchantedValue = enchantedSelect.value;
   if (enchantedValue !== "any") {
     const enchantedBoolean = enchantedValue === "true";
-    return cards.filter((card) => card.Enchanted === enchantedBoolean);
+    return cards.filter(card => card.Enchanted === enchantedBoolean);
   }
   return cards;
 }
 
-
 function applyCostFilter(cards) {
   const minInk = parseInt(document.getElementById("min-value").innerHTML);
   const maxInk = parseInt(document.getElementById("max-value").innerHTML);
-  return cards.filter((card) => card.Cost >= minInk && card.Cost <= maxInk);
+  return cards.filter(card => card.Cost >= minInk && card.Cost <= maxInk);
 }
 
 function applyTypeFilter(cards) {
-  const activeTypes = Array.from(typeFilters)
-    .filter((filter) => filter.classList.contains("active"))
-    .map((filter) => filter.getAttribute("type"));
-
+  const activeTypes = Array.from(document.querySelectorAll(".type-filter.active"))
+    .map(f => f.getAttribute("type"));
   if (activeTypes.length > 0) {
-    return cards.filter((card) => activeTypes.includes(card.Type));
+    return cards.filter(card => activeTypes.includes(card.Type));
   }
   return cards;
 }
 
 function applySetFilter(cards) {
-  const activeSet = Array.from(setNameFilters)
-    .filter((filter) => filter.classList.contains("active"))
-    .map((filter) => filter.getAttribute("set_name"));
-
+  const activeSet = Array.from(document.querySelectorAll(".set-name.active"))
+    .map(f => f.getAttribute("set_name"));
   if (activeSet.length > 0) {
-    return cards.filter((card) => activeSet.includes(card.Set_Name));
+    return cards.filter(card => activeSet.includes(card.Set_Name));
   }
   return cards;
 }
 
 function applyRarityFilter(cards) {
-  const activeRarity = Array.from(rarityNameFilters)
-    .filter((filter) => filter.classList.contains("active"))
-    .map((filter) => filter.getAttribute("Rarity"));
+  const activeRarity = Array.from(document.querySelectorAll(".rarity-name.active"))
+    .map(f => f.getAttribute("Rarity"));
   if (activeRarity.length > 0) {
-    return cards.filter((card) => activeRarity.includes(card.Rarity));
+    return cards.filter(card => activeRarity.includes(card.Rarity));
   }
   return cards;
 }
 
 export function resetFilters() {
-  colorFilters.forEach((filter) => filter.classList.remove("active"));
-  typeFilters.forEach((filter) => filter.classList.remove("active"));
-  setNameFilters.forEach((filter) => filter.classList.remove("active"));
-  rarityNameFilters.forEach((filter) => filter.classList.remove("active"));
-  inkableSelect.value = "any";
-  enchantedSelect.value = false;
+  document.querySelectorAll(".color-filter, .type-filter, .set-name, .rarity-name").forEach(f => {
+    f.classList.remove("active");
+    f.style.backgroundColor = "#000";
+    f.style.color = "#fff";
+  });
+  inkableSelect.value  = "any";
+  enchantedSelect.value = "any";
   setDefaultRangeValues();
   filterAndDisplayCards();
 }
@@ -109,9 +102,7 @@ export function validateRange() {
   let maxInk = parseInt(document.querySelector(".max-ink").value);
 
   if (minInk > maxInk) {
-    let tempValue = maxInk;
-    maxInk = minInk;
-    minInk = tempValue;
+    [minInk, maxInk] = [maxInk, minInk];
   }
 
   document.getElementById("min-value").innerHTML = minInk;
@@ -129,5 +120,5 @@ function setDefaultRangeValues() {
   maxRangeInput.value = 10;
 
   const rangeFill = document.querySelector(".range-fill");
-  rangeFill.style.width = "0%";
+  if (rangeFill) rangeFill.style.width = "0%";
 }
