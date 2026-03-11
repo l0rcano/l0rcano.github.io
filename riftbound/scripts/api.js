@@ -58,6 +58,6 @@ function mapCard(card) {
     Image:       card.images?.large  || card.images?.small || '',
     Thumbnail:   card.images?.small  || card.images?.large || '',
     TCGPlayer:   card.tcgplayer?.url || '',
-    Orientation: (type === 'Battlefield' && (card.set?.id || '') !== 'origins') ? 'landscape' : 'portrait',
+    Orientation: type === 'Battlefield' ? 'battlefield' : 'portrait',
   };
 }

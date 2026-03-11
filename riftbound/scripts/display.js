@@ -19,8 +19,20 @@ export function displayCards(cards) {
     img.setAttribute('data-card-name', card.Name);
     img.setAttribute('data-card-cleanname', card.CleanName || card.Name);
     img.setAttribute('data-card-type', card.Type);
+    img.setAttribute('data-card-orientation', card.Orientation || 'portrait');
     img.alt = card.Name;
-    img.className = card.Orientation === 'landscape' ? 'card-img landscape' : 'card-img';
+
+    if (card.Orientation === 'battlefield') {
+      img.className = 'card-img';
+      const applyRotation = function () {
+        if (this.naturalWidth > this.naturalHeight) {
+          this.classList.add('landscape');
+        }
+      };
+      img.addEventListener('load', applyRotation, { once: true });
+    } else {
+      img.className = 'card-img';
+    }
 
     const nameEl = document.createElement('span');
     nameEl.className = 'card-name';
@@ -43,6 +55,10 @@ function lazyLoadImages() {
           const img = e.target;
           img.src = img.getAttribute('data-src');
           img.removeAttribute('data-src');
+          // If image was cached, load event may have already fired before src was set
+          if (img.complete && img.naturalWidth > 0) {
+            img.dispatchEvent(new Event('load'));
+          }
           obs.unobserve(img);
         }
       });
@@ -52,6 +68,9 @@ function lazyLoadImages() {
     imgs.forEach(img => {
       img.src = img.getAttribute('data-src');
       img.removeAttribute('data-src');
+      if (img.complete && img.naturalWidth > 0) {
+        img.dispatchEvent(new Event('load'));
+      }
     });
   }
 }

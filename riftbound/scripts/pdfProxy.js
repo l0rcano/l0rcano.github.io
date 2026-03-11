@@ -80,6 +80,38 @@ export async function generateDeckPdf(deck, notifContainer) {
     }
   }
 
+  // Get image dimensions from a base64 string
+  function getImageDimensions(base64) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 1, h: 1 });
+      img.src = base64;
+    });
+  }
+
+  // Rotate a base64 image by `deg` degrees clockwise using a canvas
+  function rotateBase64(base64, deg) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        const rad = (deg * Math.PI) / 180;
+        const absDeg = ((deg % 360) + 360) % 360;
+        const outW = absDeg % 180 === 0 ? img.width  : img.height;
+        const outH = absDeg % 180 === 0 ? img.height : img.width;
+        const cv = document.createElement('canvas');
+        cv.width  = outW;
+        cv.height = outH;
+        const ctx = cv.getContext('2d');
+        ctx.translate(outW / 2, outH / 2);
+        ctx.rotate(rad);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        resolve(cv.toDataURL('image/jpeg', 0.92));
+      };
+      img.src = base64;
+    });
+  }
+
   let pos = 0;
   for (const card of deck) {
     for (let i = 0; i < card.copies; i++) {
@@ -94,9 +126,21 @@ export async function generateDeckPdf(deck, notifContainer) {
       const x = marginX + col * cardW;
       const y = marginY + row * cardH;
 
-      const b64 = await imgToBase64(card.Image);
+      let b64 = await imgToBase64(card.Image);
       if (b64) {
-        doc.addImage(b64, 'JPEG', x, y, cardW, cardH);
+        if (card.Orientation === 'battlefield') {
+          const { w, h } = await getImageDimensions(b64);
+          if (w > h) {
+            // Natively landscape (w > h): use jsPDF rotation to place it landscape in the portrait slot
+            // rotation=90 in jsPDF is CCW, anchor point shifts to bottom-left of cell
+            doc.addImage(b64, 'JPEG', x, y + cardH, cardH, cardW, '', 'NONE', 90);
+          } else {
+            // Portrait image with rotated art (h >= w): insert as-is, fills slot correctly
+            doc.addImage(b64, 'JPEG', x, y, cardW, cardH);
+          }
+        } else {
+          doc.addImage(b64, 'JPEG', x, y, cardW, cardH);
+        }
       } else {
         // Draw placeholder rectangle if image failed
         doc.setDrawColor(100, 100, 100);

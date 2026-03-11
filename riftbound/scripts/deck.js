@@ -46,21 +46,22 @@ function notify(msg) {
 }
 
 // ── Add card ──────────────────────────────────────────────────────
-function addCard(name, cleanName, image, type) {
-  const t = (type || '').trim();
-  const cn = cleanName || name; // canonical name for copy-limit checks
+function addCard(name, cleanName, image, type, orientation) {
+  const t  = (type || '').trim();
+  const cn = cleanName || name;
+  const or = orientation || (t === 'Battlefield' ? 'battlefield' : 'portrait');
 
   // Legend
   if (t === 'Legend') {
     if (legend) { notify(`Legend slot taken by <strong>${legend.Name}</strong>.`); return; }
-    legend = { Name: name, CleanName: cn, Image: image, Type: t };
+    legend = { Name: name, CleanName: cn, Image: image, Type: t, Orientation: or };
     renderDeck(); return;
   }
 
   // Champion Unit — first one fills the showcase slot, extras go to main/side
   if (t === 'Champion Unit') {
     if (!champion) {
-      champion = { Name: name, CleanName: cn, Image: image, Type: t };
+      champion = { Name: name, CleanName: cn, Image: image, Type: t, Orientation: or };
       renderDeck(); return;
     }
     // If slot already filled, fall through to main/side logic below
@@ -70,7 +71,7 @@ function addCard(name, cleanName, image, type) {
   if (t === 'Battlefield') {
     if (battlefields.length >= BF_MAX) { notify('Maximum 3 Battlefields.'); return; }
     if (battlefields.find(b => b.CleanName === cn)) { notify(`<strong>${name}</strong> already in Battlefields.`); return; }
-    battlefields.push({ Name: name, CleanName: cn, Image: image, Type: t });
+    battlefields.push({ Name: name, CleanName: cn, Image: image, Type: t, Orientation: or });
     renderDeck(); return;
   }
 
@@ -82,7 +83,7 @@ function addCard(name, cleanName, image, type) {
       if (ex.copies >= RUNE_COPIES) { notify(`Max ${RUNE_COPIES} copies of <strong>${cn}</strong>.`); return; }
       ex.copies++;
     } else {
-      runes.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
+      runes.push({ Name: name, CleanName: cn, Image: image, Type: t, Orientation: or, copies: 1 });
     }
     renderDeck(); return;
   }
@@ -95,7 +96,7 @@ function addCard(name, cleanName, image, type) {
       if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
       ex.copies++;
     } else {
-      sideDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
+      sideDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, Orientation: or, copies: 1 });
     }
   } else {
     if (mainTotal() >= MAIN_MAX) { notify(`Main deck full (${MAIN_MAX} cards).`); return; }
@@ -104,7 +105,7 @@ function addCard(name, cleanName, image, type) {
       if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
       ex.copies++;
     } else {
-      mainDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
+      mainDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, Orientation: or, copies: 1 });
     }
   }
   renderDeck();
@@ -381,7 +382,7 @@ function importDeck() {
     if (!card) { notify(`Not found: <strong>${name}</strong>`); return; }
     const prevTarget = addTarget;
     if (zone === 'side') addTarget = 'side'; else addTarget = 'main';
-    for (let i = 0; i < copies; i++) addCard(card.Name, card.CleanName || card.Name, card.Image, card.Type);
+    for (let i = 0; i < copies; i++) addCard(card.Name, card.CleanName || card.Name, card.Image, card.Type, card.Orientation);
     addTarget = prevTarget;
   });
 }
@@ -391,11 +392,12 @@ function setupCardClick() {
   document.getElementById('file-list')?.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
-    const name      = img.getAttribute('data-card-name');
-    const cleanName = img.getAttribute('data-card-cleanname') || name;
-    const type      = img.getAttribute('data-card-type');
-    const image     = img.src || img.getAttribute('data-src');
-    if (name) addCard(name, cleanName, image, type);
+    const name        = img.getAttribute('data-card-name');
+    const cleanName   = img.getAttribute('data-card-cleanname') || name;
+    const type        = img.getAttribute('data-card-type');
+    const orientation = img.getAttribute('data-card-orientation') || 'portrait';
+    const image       = img.src || img.getAttribute('data-src');
+    if (name) addCard(name, cleanName, image, type, orientation);
   });
 }
 
