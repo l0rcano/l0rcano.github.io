@@ -21,42 +21,86 @@
 // set USE_DIRECT = true and fill in your key below.
 // ---------------------------------------------------------------
 
-const USE_DIRECT = false; // ← Set to true for local dev without a proxy
-const RIOT_API_KEY = 'RGAPI-e66661e8-2d21-4c08-99bb-f82d88815808'; // ← Only used when USE_DIRECT = true
-const PROXY_URL = '/api/riftbound-proxy';
+// ── Configuration ──────────────────────────────────────────────
+//
+// Option A (recommended): Use the proxy server (proxy-server.js)
+//   → Keep USE_DIRECT = false, set your key in proxy-server.js
+//
+// Option B (quick local test): Direct fetch with key in frontend
+//   → Set USE_DIRECT = true and paste your key in RIOT_API_KEY
+//   → NOT recommended for production (exposes your key)
+//
+// Regions tried in order: europe → americas → asia
+// If europe returns 404, the code will automatically try americas.
+// ───────────────────────────────────────────────────────────────
+
+const USE_DIRECT  = false;
+const RIOT_API_KEY = 'RGAPI-e66661e8-2d21-4c08-99bb-f82d88815808';
+const PROXY_URL   = '/api/riftbound-proxy';
+
+// Regions to try in order when USE_DIRECT = true
+const REGIONS = ['europe', 'americas', 'asia'];
 
 export let cardsData = [];
 
 export function fetchCardsData(locale = 'en') {
-  const url = USE_DIRECT
-    ? `https://europe.api.riotgames.com/riftbound/content/v1/contents?locale=${locale}`
-    : `${PROXY_URL}?locale=${locale}`;
+  if (USE_DIRECT) {
+    return fetchDirect(locale);
+  }
+  return fetchViaProxy(locale);
+}
 
-  const options = USE_DIRECT
-    ? { headers: { 'X-Riot-Token': RIOT_API_KEY } }
-    : {};
-
-  return fetch(url, options)
+function fetchViaProxy(locale) {
+  const url = `${PROXY_URL}?locale=${locale}`;
+  return fetch(url)
     .then(res => {
-      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      if (!res.ok) throw new Error(`Proxy error ${res.status} — check proxy-server.js is running and your API key is set`);
       return res.json();
     })
-    .then(data => {
-      // The API response is an object with `sets` array, each set has `cards`
-      // Flatten all cards from all sets
-      const allCards = [];
-      if (data.sets && Array.isArray(data.sets)) {
-        data.sets.forEach(set => {
-          if (set.cards && Array.isArray(set.cards)) {
-            set.cards.forEach(card => {
-              allCards.push(mapCard(card, set));
-            });
-          }
-        });
+    .then(parseResponse);
+}
+
+async function fetchDirect(locale) {
+  for (const region of REGIONS) {
+    const url = `https://${region}.api.riotgames.com/riftbound/content/v1/contents?locale=${locale}`;
+    console.log(`[api] trying ${url}`);
+    try {
+      const res = await fetch(url, { headers: { 'X-Riot-Token': RIOT_API_KEY } });
+      if (res.status === 404) {
+        console.warn(`[api] 404 on ${region}, trying next region…`);
+        continue;
       }
-      cardsData = allCards;
-      return cardsData;
+      if (!res.ok) throw new Error(`API error ${res.status} (${region}): ${res.statusText}`);
+      const data = await res.json();
+      console.log(`[api] loaded from ${region}`);
+      return parseResponse(data);
+    } catch (err) {
+      if (err.message.includes('Failed to fetch')) {
+        console.warn(`[api] CORS blocked on ${region} (expected in browser) — use the proxy instead`);
+        break;
+      }
+      throw err;
+    }
+  }
+  throw new Error('Could not reach Riftbound API on any region. Use proxy-server.js to bypass CORS.');
+}
+
+function parseResponse(data) {
+  const allCards = [];
+  if (data.sets && Array.isArray(data.sets)) {
+    data.sets.forEach(set => {
+      if (set.cards && Array.isArray(set.cards)) {
+        set.cards.forEach(card => allCards.push(mapCard(card, set)));
+      }
     });
+  }
+  if (allCards.length === 0) {
+    console.warn('[api] Response parsed but no cards found. Raw response:', data);
+  } else {
+    console.log(`[api] Loaded ${allCards.length} cards across ${data.sets?.length ?? 0} sets`);
+  }
+  cardsData = allCards;
+  return cardsData;
 }
 
 function mapCard(card, set) {
