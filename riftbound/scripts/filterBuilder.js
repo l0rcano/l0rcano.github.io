@@ -1,17 +1,18 @@
 import { cardsData } from './api.js';
 import { filterAndDisplayCards } from './filters.js';
 
-// Domain metadata: color identity of Riftbound
 const DOMAIN_META = {
-  Fury:   { color: '#c0392b', emoji: '🔴' },
-  Calm:   { color: '#27ae60', emoji: '🟢' },
-  Mind:   { color: '#2980b9', emoji: '🔵' },
-  Body:   { color: '#e67e22', emoji: '🟠' },
-  Chaos:  { color: '#8e44ad', emoji: '🟣' },
-  Order:  { color: '#f1c40f', emoji: '🟡' },
+  Fury:   { color: '#c0392b' },
+  Calm:   { color: '#27ae60' },
+  Mind:   { color: '#2980b9' },
+  Body:   { color: '#e67e22' },
+  Chaos:  { color: '#8e44ad' },
+  Order:  { color: '#f1c40f' },
 };
 
-const RARITY_ORDER = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
+// Rarities shown in filter UI (skip print/collector variants)
+const RARITY_ORDER   = ['Common', 'Uncommon', 'Rare', 'Epic'];
+const RARITY_EXCLUDE = ['Alternate Art', 'Overnumbered', 'Showcase'];
 
 function toggle(btn, activeColor) {
   btn.addEventListener('click', function () {
@@ -51,16 +52,15 @@ function buildDomainFilters() {
   if (!container) return;
   container.innerHTML = '';
 
-  // Get unique domains from data (flattened from arrays)
   const inData = new Set();
   cardsData.forEach(c => (c.Domain || []).forEach(d => inData.add(d)));
 
-  // Show in known order first, then unknowns
-  const known = Object.keys(DOMAIN_META).filter(d => inData.has(d));
+  const known  = Object.keys(DOMAIN_META).filter(d => inData.has(d));
   const unknown = [...inData].filter(d => !DOMAIN_META[d]);
+
   [...known, ...unknown].forEach(domain => {
     const meta = DOMAIN_META[domain] || { color: '#888' };
-    const btn = document.createElement('button');
+    const btn  = document.createElement('button');
     btn.className = 'filter-btn domain-filter';
     btn.setAttribute('data-domain', domain);
     btn.style.setProperty('--domain-color', meta.color);
@@ -77,7 +77,11 @@ function buildTypeFilters() {
   if (!container) return;
   container.innerHTML = '';
 
-  const types = [...new Set(cardsData.map(c => c.Type).filter(Boolean))].sort();
+  // Use FullType for display but Type for filtering (first segment)
+  const seen = new Set();
+  cardsData.forEach(c => { if (c.Type) seen.add(c.Type); });
+  const types = [...seen].sort();
+
   types.forEach(type => {
     const btn = document.createElement('button');
     btn.className = 'filter-btn type-filter';
@@ -95,17 +99,18 @@ function buildSetFilters() {
   if (!container) return;
   container.innerHTML = '';
 
-  const seen = new Set();
+  const seen = new Map();
   cardsData.forEach(c => {
-    if (c.Set_ID && !seen.has(c.Set_ID)) {
-      seen.add(c.Set_ID);
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn set-filter';
-      btn.setAttribute('data-set', c.Set_ID);
-      btn.textContent = c.Set_Name || c.Set_ID;
-      container.appendChild(btn);
-      toggle(btn, null);
-    }
+    if (c.Set_ID && !seen.has(c.Set_ID)) seen.set(c.Set_ID, c.Set_Name);
+  });
+
+  seen.forEach((name, id) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn set-filter';
+    btn.setAttribute('data-set', id);
+    btn.textContent = name;
+    container.appendChild(btn);
+    toggle(btn, null);
   });
 
   clearBtn(container, '.set-filter', 'Clear');
@@ -117,8 +122,9 @@ function buildRarityFilters() {
   container.innerHTML = '';
 
   const inData = new Set(cardsData.map(c => c.Rarity).filter(Boolean));
-  const unknown = [...inData].filter(r => !RARITY_ORDER.includes(r));
-  const ordered = [...RARITY_ORDER.filter(r => inData.has(r)), ...unknown];
+
+  // Show gameplay rarities in order, skip print variants
+  const ordered = RARITY_ORDER.filter(r => inData.has(r));
 
   ordered.forEach(rarity => {
     const btn = document.createElement('button');
