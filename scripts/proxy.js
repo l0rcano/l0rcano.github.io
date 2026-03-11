@@ -1,3 +1,5 @@
+const IMAGE_PROXY_URL = 'https://billowing-shape-802c.tomas-projectes.workers.dev';
+
 export async function generateDeckPdf(deck, notificationContainer) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('portrait', 'mm', 'a4');
@@ -8,10 +10,8 @@ export async function generateDeckPdf(deck, notificationContainer) {
     const imagesPerRow = 3;
     const imagesPerColumn = 3;
     const imagesPerPage = imagesPerRow * imagesPerColumn;
-    const totalWidth = imagesPerRow * cardWidth;
-    const totalHeight = imagesPerColumn * cardHeight;
-    const marginX = (pageWidth - totalWidth) / 2;
-    const marginY = (pageHeight - totalHeight) / 2;
+    const marginX = (pageWidth - imagesPerRow * cardWidth) / 2;
+    const marginY = (pageHeight - imagesPerColumn * cardHeight) / 2;
     let imageCount = 0;
 
     const totalImages = deck.reduce((acc, card) => acc + card.copies, 0);
@@ -35,43 +35,28 @@ export async function generateDeckPdf(deck, notificationContainer) {
         loadingMessage.remove();
     }
 
-    // Obté la imatge del DOM si ja està carregada, sinó la carrega de nou
-    function getImageData(cardName, imageUrl) {
-        return new Promise((resolve) => {
-            // Busca la imatge ja carregada al DOM pel nom de la carta
-            const domImg = document.querySelector(`img[alt="${cardName}"]`);
-            if (domImg && domImg.complete && domImg.naturalWidth > 0) {
-                try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = domImg.naturalWidth;
-                    canvas.height = domImg.naturalHeight;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(domImg, 0, 0);
-                    resolve(canvas.toDataURL('image/jpeg'));
-                    return;
-                } catch (e) {
-                    // Si falla (tainted canvas), fem fallback al fetch
-                }
-            }
-
-            // Fallback: carrega la imatge de nou
-            const img = new Image();
-            img.crossOrigin = 'Anonymous';
-            img.onload = function () {
-                const canvas = document.createElement('canvas');
-                canvas.width = this.width;
-                canvas.height = this.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(this, 0, 0);
-                resolve(canvas.toDataURL('image/jpeg'));
-            };
-            img.onerror = () => resolve(null);
-            img.src = imageUrl;
-        });
+    // Fetch via proxy → blob → base64 (evita CORS i canvas taint)
+    async function getImageData(cardName, imageUrl) {
+        const proxyUrl = `${IMAGE_PROXY_URL}?url=${encodeURIComponent(imageUrl)}`;
+        try {
+            const res = await fetch(proxyUrl);
+            if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
+            const blob = await res.blob();
+            return await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload  = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(blob);
+            });
+        } catch (err) {
+            console.warn(`No s'ha pogut carregar la imatge de: ${cardName}`, err.message);
+            return null;
+        }
     }
 
     function drawCutLines(doc) {
         doc.setDrawColor(128, 128, 128);
+        doc.setLineWidth(0.2);
         for (let i = 0; i <= imagesPerRow; i++) {
             const x = marginX + i * cardWidth;
             doc.line(x, 0, x, pageHeight);
@@ -101,7 +86,7 @@ export async function generateDeckPdf(deck, notificationContainer) {
             if (imgData) {
                 doc.addImage(imgData, 'JPEG', x, y, cardWidth, cardHeight);
             } else {
-                console.error('No s\'ha pogut carregar la imatge de:', card.Name);
+                console.error("No s'ha pogut carregar la imatge de:", card.Name);
             }
 
             imageCount++;
@@ -111,7 +96,6 @@ export async function generateDeckPdf(deck, notificationContainer) {
     }
 
     if (includeGuides) drawCutLines(doc);
-
     hideLoadingMessage(loadingMessage);
     doc.save("deck-list-lorcano.pdf");
 }
