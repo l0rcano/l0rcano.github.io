@@ -18,6 +18,7 @@ export async function generateDeckPdf(deck, notificationContainer) {
     let processedImages = 0;
 
     const includeGuides = document.getElementById("include-guides-checkbox").checked;
+    console.log("includeGuides:", includeGuides);
 
     function showLoadingMessage() {
         const loadingMessage = document.createElement('div');
@@ -28,33 +29,18 @@ export async function generateDeckPdf(deck, notificationContainer) {
     }
 
     function updateLoadingMessage(loadingMessage, percentage) {
-        loadingMessage.querySelector('#loading-percentage').textContent = `${percentage}%`;
+        const loadingPercentage = loadingMessage.querySelector('#loading-percentage');
+        loadingPercentage.textContent = `${percentage}%`;
     }
 
     function hideLoadingMessage(loadingMessage) {
         loadingMessage.remove();
     }
 
-    // Obté la imatge del DOM si ja està carregada, sinó la carrega de nou
-    function getImageData(cardName, imageUrl) {
-        return new Promise((resolve) => {
-            // Busca la imatge ja carregada al DOM pel nom de la carta
-            const domImg = document.querySelector(`img[alt="${cardName}"]`);
-            if (domImg && domImg.complete && domImg.naturalWidth > 0) {
-                try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = domImg.naturalWidth;
-                    canvas.height = domImg.naturalHeight;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(domImg, 0, 0);
-                    resolve(canvas.toDataURL('image/jpeg'));
-                    return;
-                } catch (e) {
-                    // Si falla (tainted canvas), fem fallback al fetch
-                }
-            }
+    const loadingMessage = showLoadingMessage();
 
-            // Fallback: carrega la imatge de nou
+    async function convertImageToBase64(url) {
+        return new Promise((resolve, reject) => {
             const img = new Image();
             img.crossOrigin = 'Anonymous';
             img.onload = function () {
@@ -63,10 +49,11 @@ export async function generateDeckPdf(deck, notificationContainer) {
                 canvas.height = this.height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(this, 0, 0);
-                resolve(canvas.toDataURL('image/jpeg'));
+                const dataURL = canvas.toDataURL('image/jpeg');
+                resolve(dataURL);
             };
-            img.onerror = () => resolve(null);
-            img.src = imageUrl;
+            img.onerror = reject;
+            img.src = url;
         });
     }
 
@@ -75,19 +62,21 @@ export async function generateDeckPdf(deck, notificationContainer) {
         for (let i = 0; i <= imagesPerRow; i++) {
             const x = marginX + i * cardWidth;
             doc.line(x, 0, x, pageHeight);
+            console.log(`Drew vertical line at x: ${x}`);
         }
         for (let j = 0; j <= imagesPerColumn; j++) {
             const y = marginY + j * cardHeight;
             doc.line(0, y, pageWidth, y);
+            console.log(`Drew horizontal line at y: ${y}`);
         }
     }
-
-    const loadingMessage = showLoadingMessage();
 
     for (let card of deck) {
         for (let i = 0; i < card.copies; i++) {
             if (imageCount === imagesPerPage) {
-                if (includeGuides) drawCutLines(doc);
+                if (includeGuides) {
+                    drawCutLines(doc);
+                }
                 doc.addPage();
                 imageCount = 0;
             }
@@ -97,21 +86,26 @@ export async function generateDeckPdf(deck, notificationContainer) {
             const x = marginX + columnIndex * cardWidth;
             const y = marginY + rowIndex * cardHeight;
 
-            const imgData = await getImageData(card.Name, card.Image);
-            if (imgData) {
+            try {
+                const imgData = await convertImageToBase64(card.Image);
                 doc.addImage(imgData, 'JPEG', x, y, cardWidth, cardHeight);
-            } else {
-                console.error('No s\'ha pogut carregar la imatge de:', card.Name);
+            } catch (error) {
+                console.error('Error loading image', card.Image, error);
             }
 
             imageCount++;
             processedImages++;
-            updateLoadingMessage(loadingMessage, Math.floor((processedImages / totalImages) * 100));
+            const percentage = Math.floor((processedImages / totalImages) * 100);
+            updateLoadingMessage(loadingMessage, percentage);
         }
     }
 
-    if (includeGuides) drawCutLines(doc);
+    if (includeGuides) {
+        drawCutLines(doc);
+    }
 
     hideLoadingMessage(loadingMessage);
-    doc.save("deck-list-lorcano.pdf");
+
+    doc.save("deck-list.pdf");
+    
 }
