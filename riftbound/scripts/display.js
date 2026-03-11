@@ -17,6 +17,7 @@ export function displayCards(cards) {
     img.setAttribute('data-src', card.Image || card.Thumbnail || '');
     img.setAttribute('data-card-id', card.ID);
     img.setAttribute('data-card-name', card.Name);
+    img.setAttribute('data-card-cleanname', card.CleanName || card.Name);
     img.setAttribute('data-card-type', card.Type);
     img.alt = card.Name;
     img.className = card.Orientation === 'landscape' ? 'card-img landscape' : 'card-img';

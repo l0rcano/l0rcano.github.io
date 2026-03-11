@@ -15,17 +15,18 @@ let runes        = [];  // max 12 (3 copies each)
 let mainDeck = [];
 let sideDeck = [];
 
-const MAIN_MAX  = 40;
-const SIDE_MAX  = 8;
-const BF_MAX    = 3;
-const RUNE_MAX  = 12;
+const MAIN_MAX   = 40;
+const SIDE_MAX   = 8;
+const BF_MAX     = 3;
+const RUNE_MAX   = 12;
 const MAX_COPIES = 3;
+const RUNE_COPIES = 12; // max copies of a single rune (capped by RUNE_MAX total)
 
 // Where new cards go: 'main' or 'side'
 let addTarget = 'main';
 
 // ── Computed ──────────────────────────────────────────────────────
-function mainTotal()  { return mainDeck.reduce((a,c) => a + c.copies, 0); }
+function mainTotal()  { return mainDeck.reduce((a,c) => a + c.copies, 0) + (champion ? 1 : 0); }
 function sideTotal()  { return sideDeck.reduce((a,c) => a + c.copies, 0); }
 function runeTotal()  { return runes.reduce((a,c) => a + c.copies, 0); }
 
@@ -45,40 +46,43 @@ function notify(msg) {
 }
 
 // ── Add card ──────────────────────────────────────────────────────
-function addCard(name, image, type) {
+function addCard(name, cleanName, image, type) {
   const t = (type || '').trim();
+  const cn = cleanName || name; // canonical name for copy-limit checks
 
   // Legend
   if (t === 'Legend') {
     if (legend) { notify(`Legend slot taken by <strong>${legend.Name}</strong>.`); return; }
-    legend = { Name: name, Image: image, Type: t };
+    legend = { Name: name, CleanName: cn, Image: image, Type: t };
     renderDeck(); return;
   }
 
-  // Champion Unit
+  // Champion Unit — first one fills the showcase slot, extras go to main/side
   if (t === 'Champion Unit') {
-    if (champion) { notify(`Champion slot taken by <strong>${champion.Name}</strong>.`); return; }
-    champion = { Name: name, Image: image, Type: t };
-    renderDeck(); return;
+    if (!champion) {
+      champion = { Name: name, CleanName: cn, Image: image, Type: t };
+      renderDeck(); return;
+    }
+    // If slot already filled, fall through to main/side logic below
   }
 
   // Battlefield
   if (t === 'Battlefield') {
     if (battlefields.length >= BF_MAX) { notify('Maximum 3 Battlefields.'); return; }
-    if (battlefields.find(b => b.Name === name)) { notify(`<strong>${name}</strong> already in Battlefields.`); return; }
-    battlefields.push({ Name: name, Image: image, Type: t });
+    if (battlefields.find(b => b.CleanName === cn)) { notify(`<strong>${name}</strong> already in Battlefields.`); return; }
+    battlefields.push({ Name: name, CleanName: cn, Image: image, Type: t });
     renderDeck(); return;
   }
 
   // Rune — goes to its own pool regardless of addTarget
   if (t === 'Rune') {
     if (runeTotal() >= RUNE_MAX) { notify('Maximum 12 Runes.'); return; }
-    const ex = runes.find(c => c.Name === name);
+    const ex = runes.find(c => c.CleanName === cn);
     if (ex) {
-      if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies of <strong>${name}</strong>.`); return; }
+      if (ex.copies >= RUNE_COPIES) { notify(`Max ${RUNE_COPIES} copies of <strong>${cn}</strong>.`); return; }
       ex.copies++;
     } else {
-      runes.push({ Name: name, Image: image, Type: t, copies: 1 });
+      runes.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
     }
     renderDeck(); return;
   }
@@ -86,21 +90,21 @@ function addCard(name, image, type) {
   // Main or side depending on toggle
   if (addTarget === 'side') {
     if (sideTotal() >= SIDE_MAX) { notify(`Sidedeck full (${SIDE_MAX} cards).`); return; }
-    const ex = sideDeck.find(c => c.Name === name);
+    const ex = sideDeck.find(c => c.CleanName === cn);
     if (ex) {
       if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
       ex.copies++;
     } else {
-      sideDeck.push({ Name: name, Image: image, Type: t, copies: 1 });
+      sideDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
     }
   } else {
     if (mainTotal() >= MAIN_MAX) { notify(`Main deck full (${MAIN_MAX} cards).`); return; }
-    const ex = mainDeck.find(c => c.Name === name);
+    const ex = mainDeck.find(c => c.CleanName === cn);
     if (ex) {
       if (ex.copies >= MAX_COPIES) { notify(`Max ${MAX_COPIES} copies.`); return; }
       ex.copies++;
     } else {
-      mainDeck.push({ Name: name, Image: image, Type: t, copies: 1 });
+      mainDeck.push({ Name: name, CleanName: cn, Image: image, Type: t, copies: 1 });
     }
   }
   renderDeck();
@@ -229,7 +233,7 @@ function renderThumbRow(containerId, cards, zone) {
       const add = document.createElement('button');
       add.className = 'thumb-btn'; add.textContent = '+';
       add.addEventListener('click', () => {
-        if (card.copies >= MAX_COPIES) { notify('Max 3 copies.'); return; }
+        if (card.copies >= RUNE_COPIES) { notify(`Max ${RUNE_COPIES} copies.`); return; }
         if (runeTotal() >= RUNE_MAX)   { notify('Max 12 runes.'); return; }
         card.copies++; renderDeck();
       });
@@ -377,7 +381,7 @@ function importDeck() {
     if (!card) { notify(`Not found: <strong>${name}</strong>`); return; }
     const prevTarget = addTarget;
     if (zone === 'side') addTarget = 'side'; else addTarget = 'main';
-    for (let i = 0; i < copies; i++) addCard(card.Name, card.Image, card.Type);
+    for (let i = 0; i < copies; i++) addCard(card.Name, card.CleanName || card.Name, card.Image, card.Type);
     addTarget = prevTarget;
   });
 }
@@ -387,10 +391,11 @@ function setupCardClick() {
   document.getElementById('file-list')?.addEventListener('click', e => {
     const img = e.target.closest('img');
     if (!img) return;
-    const name  = img.getAttribute('data-card-name');
-    const type  = img.getAttribute('data-card-type');
-    const image = img.src || img.getAttribute('data-src');
-    if (name) addCard(name, image, type);
+    const name      = img.getAttribute('data-card-name');
+    const cleanName = img.getAttribute('data-card-cleanname') || name;
+    const type      = img.getAttribute('data-card-type');
+    const image     = img.src || img.getAttribute('data-src');
+    if (name) addCard(name, cleanName, image, type);
   });
 }
 

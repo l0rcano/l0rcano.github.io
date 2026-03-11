@@ -12,7 +12,6 @@ export function filterAndDisplayCards() {
   cards = applyEnergyFilter(cards);
   cards = applySearchFilters(cards);
   sortAndDisplayCards(cards);
-  displayCards(cards.slice(0, getCardsDisplayed()));
   updateCounter(cards.length);
 }
 
