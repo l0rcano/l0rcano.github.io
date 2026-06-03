@@ -1,16 +1,16 @@
 import { updateApiUrl } from "./lang.js";
 
 export let cardsData = [];
-
+const PROXY_URL = "https://billowing-shape-802c.tomas-projectes.workers.dev";
 const BASE_SET_URL = "https://lorcanajson.org/files/current/en/sets/setdata.";
 
 async function fetchSetData(setNumber) {
-  const url = `${BASE_SET_URL}${setNumber}.json`;
+  const target = `${BASE_SET_URL}${setNumber}.json`;
+  const url = `${PROXY_URL}?url=${encodeURIComponent(target)}`;
   const response = await fetch(url);
   if (!response.ok) return null;
   return response.json();
 }
-
 function mapCards(data) {
   return (data.cards || []).map(card => ({
     Artist:          card.artistsText || "",
