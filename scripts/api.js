@@ -11,14 +11,16 @@ async function fetchSetData(setNumber) {
   if (!response.ok) return null;
   return response.json();
 }
+
 function mapCards(data) {
+  const setName = data.name || "";
   return (data.cards || []).map(card => ({
     Artist:          card.artistsText || "",
-    Set_Name:        data.sets?.[card.setCode]?.name || "",
+    Set_Name:        setName,     
     Classifications: card.subtypesText || "",
     Date_Added:      data.metadata?.generatedOn || "",
     Abilities:       (card.keywordAbilities || []).join(", "),
-    Set_Num:         parseInt(card.setCode, 10) || 0,
+    Set_Num:         data.number || 0, 
     Color:           card.color || "",
     Gamemode:        "Lorcana",
     Franchise:       card.story || "",
@@ -34,7 +36,7 @@ function mapCards(data) {
     Body_Text:       card.fullText || "",
     Willpower:       card.willpower ?? 0,
     Strength:        card.strength ?? 0,
-    Set_ID:          card.setCode || "",
+    Set_ID:          card.code || "", 
     Enchanted:       (card.foilTypes || []).includes("Enchanted"),
     Flavor_Text:     card.flavorText || "",
   }));
