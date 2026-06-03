@@ -50,7 +50,6 @@ export async function fetchCardsData() {
     
     const firstNull = results.findIndex(r => r === null);
     if (firstNull !== -1) {
-      // Guardamos solo los válidos de este bloque
       allData.push(...results.slice(0, firstNull));
       break;
     }
